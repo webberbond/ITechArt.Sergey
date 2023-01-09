@@ -5,18 +5,18 @@
 [assembly: LevelOfParallelism(3)]
 public class BaseAttributes
 {
-    public IWebDriver driver;
+    public IWebDriver Driver;
     
     [SetUp]
     public void StartBrowser()
     {
         new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig());
-        driver = new ChromeDriver();
+        Driver = new ChromeDriver();
 
-        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+        Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
 
-        driver.Manage().Window.Maximize();
-        driver.Url = "https://calculator.com/";
+        Driver.Manage().Window.Maximize();
+        Driver.Url = "https://calculator.com/";
     }
 
     [OneTimeSetUp]
@@ -28,7 +28,7 @@ public class BaseAttributes
     [TearDown]
     public void CloseBrowser()
     {
-        driver.Close();
+        Driver.Close();
     }
     
     [OneTimeTearDown]

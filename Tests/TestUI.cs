@@ -6,19 +6,19 @@
         [Test]
         public void TestingInput()
         {
-            driver.FindElement(By.XPath($"//input[@type='button'][@onclick = 'javascript:digit(1)']")).Click();
-            driver.FindElement(By.XPath($"//input[@type='button'][@onclick = 'javascript:digit(6)']")).Click();
-            driver.FindElement(By.XPath($"//input[@type='button'][@onclick = 'javascript:digit(9)']")).Click();
+            Driver.FindElement(By.XPath($"//input[@type='button'][@onclick = 'javascript:digit(1)']")).Click();
+            Driver.FindElement(By.XPath($"//input[@type='button'][@onclick = 'javascript:digit(6)']")).Click();
+            Driver.FindElement(By.XPath($"//input[@type='button'][@onclick = 'javascript:digit(9)']")).Click();
             
-            var finalNum = driver.FindElement(By.Id("fld_1")).GetAttribute("value");
+            var finalNum = Driver.FindElement(By.Id("fld_1")).GetAttribute("value");
 
-            driver.FindElement(By.XPath("//input[@type='button'][@onclick='javascript:operator(\"/\")']")).Click();
-            driver.FindElement(By.XPath($"//input[@type='button'][@onclick = 'javascript:digit(1)']")).Click();
-            driver.FindElement(By.XPath($"//input[@type='button'][@onclick = 'javascript:digit(3)']")).Click();
+            Driver.FindElement(By.XPath("//input[@type='button'][@onclick='javascript:operator(\"/\")']")).Click();
+            Driver.FindElement(By.XPath($"//input[@type='button'][@onclick = 'javascript:digit(1)']")).Click();
+            Driver.FindElement(By.XPath($"//input[@type='button'][@onclick = 'javascript:digit(3)']")).Click();
             
-            driver.FindElement(By.XPath($"//input[@type='button'][@onclick = 'javascript:equals()']")).Click();
+            Driver.FindElement(By.XPath($"//input[@type='button'][@onclick = 'javascript:equals()']")).Click();
             
-            var afterDivide = driver.FindElement(By.Id("fld_5")).GetAttribute("value");
+            var afterDivide = Driver.FindElement(By.Id("fld_5")).GetAttribute("value");
             
             Assert.Multiple(() =>
             {
@@ -30,13 +30,13 @@
         [Test]
         public void TestingView()
         {
-            driver.FindElement(By.XPath("//button[normalize-space()='View']")).Click();
+            Driver.FindElement(By.XPath("//button[normalize-space()='View']")).Click();
 
-            var element = driver.FindElement(By.XPath("//input[@id='trig']"));
+            var element = Driver.FindElement(By.XPath("//input[@id='trig']"));
             element.Click();
-            driver.SwitchTo().Alert().Accept();
+            Driver.SwitchTo().Alert().Accept();
 
-            var sinButton = driver.FindElement(By.CssSelector("button[onclick='javascript:trigfunc(\"sin\")']")).Displayed;
+            var sinButton = Driver.FindElement(By.CssSelector("button[onclick='javascript:trigfunc(\"sin\")']")).Displayed;
         } 
     }
 }
