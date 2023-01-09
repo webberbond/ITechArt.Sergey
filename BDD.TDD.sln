@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BDD", "BDD\BDD.csproj", "{D49DA2C7-0E93-4368-8A2E-78F369CFD8FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TDD", "TDD\TDD.csproj", "{5C02317B-E62C-46F2-A978-87D0B68960DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D49DA2C7-0E93-4368-8A2E-78F369CFD8FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D49DA2C7-0E93-4368-8A2E-78F369CFD8FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D49DA2C7-0E93-4368-8A2E-78F369CFD8FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D49DA2C7-0E93-4368-8A2E-78F369CFD8FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C02317B-E62C-46F2-A978-87D0B68960DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C02317B-E62C-46F2-A978-87D0B68960DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C02317B-E62C-46F2-A978-87D0B68960DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C02317B-E62C-46F2-A978-87D0B68960DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
