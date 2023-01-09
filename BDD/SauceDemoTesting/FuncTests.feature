@@ -11,7 +11,7 @@
 		Then User should be logged in
 		And Quite the browser
 		
-	Scenario: Add two numbers
+	Scenario: Successful adding items to cart
 		Given User should be logged in
 		And I click Add To Cart button
 		And I see that the item was added to the shopping cart container
