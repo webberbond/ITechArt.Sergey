@@ -70,8 +70,7 @@ public class FuncTestsSteps
     {
         throw new NotImplementedException();
     }
-
-
+    
     [Then(@"Quite the browser")]
     public void ThenQuiteTheBrowser()
     {
