@@ -114,12 +114,12 @@ namespace BDD.SauceDemoTesting
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Add two numbers")]
-        public async System.Threading.Tasks.Task AddTwoNumbers()
+        [NUnit.Framework.DescriptionAttribute("Successful adding items to cart")]
+        public async System.Threading.Tasks.Task SuccessfulAddingItemsToCart()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add two numbers", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successful adding items to cart", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 14
  this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -131,15 +131,27 @@ namespace BDD.SauceDemoTesting
             {
                 await this.ScenarioStartAsync();
 #line 15
-  await testRunner.GivenAsync("User should be logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  await testRunner.GivenAsync("I go to the website saucedemo.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 16
-  await testRunner.AndAsync("I click Add To Cart button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  await testRunner.AndAsync("I fill username in the placeholder", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 17
-  await testRunner.AndAsync("I see that the item was added to the shopping cart container", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  await testRunner.AndAsync("I fill password in the placeholder", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 18
+  await testRunner.WhenAsync("I click button Login", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 19
+  await testRunner.ThenAsync("User should be logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 20
+  await testRunner.AndAsync("I click Add To Cart button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 21
+  await testRunner.AndAsync("I see that the item was added to the shopping cart container", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 22
   await testRunner.AndAsync("Quite the browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -147,13 +159,13 @@ namespace BDD.SauceDemoTesting
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Successful Logout")]
-        public async System.Threading.Tasks.Task SuccessfulLogout()
+        [NUnit.Framework.DescriptionAttribute("Successful adding and removing items from cart")]
+        public async System.Threading.Tasks.Task SuccessfulAddingAndRemovingItemsFromCart()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successful Logout", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 20
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successful adding and removing items from cart", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 24
  this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -163,19 +175,34 @@ namespace BDD.SauceDemoTesting
             else
             {
                 await this.ScenarioStartAsync();
-#line 21
-  await testRunner.GivenAsync("User should be logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 22
-  await testRunner.AndAsync("I click on the menu in the left corner of the site", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 23
-  await testRunner.AndAsync("I click Logout button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 24
-  await testRunner.AndAsync("I see Login form", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
 #line 25
+  await testRunner.GivenAsync("I go to the website saucedemo.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 26
+  await testRunner.AndAsync("I fill username in the placeholder", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 27
+  await testRunner.AndAsync("I fill password in the placeholder", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 28
+  await testRunner.WhenAsync("I click button Login", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 29
+  await testRunner.ThenAsync("User should be logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 30
+  await testRunner.AndAsync("I click Add To Cart button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 31
+  await testRunner.AndAsync("I see that the item was added to the shopping cart container", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 32
+  await testRunner.AndAsync("I click Remove button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 33
+  await testRunner.AndAsync("I see that the item was removed from the shopping cart container", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 34
   await testRunner.AndAsync("Quite the browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

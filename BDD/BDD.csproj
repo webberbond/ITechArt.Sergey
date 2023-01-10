@@ -29,4 +29,8 @@
       <UpToDateCheckBuild Remove="CalculatorTesting\SumTest.feature.cs" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\TDD\TDD.csproj" />
+    </ItemGroup>
+
 </Project>

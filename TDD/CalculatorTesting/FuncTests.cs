@@ -43,7 +43,7 @@ public class FuncTests
     public void MultiplicateNegativeValues()
     {
         double result = Calculator.Multiplication(-7, -1);
-        Assert.AreEqual(1,result);
+        Assert.AreEqual(7,result);
     }
 
     [Test]
