@@ -1,4 +1,5 @@
 ﻿namespace WebDriverBasics.DriverConfiguration;
+
 public class WebDriverFactory
 {
     public IWebDriver GetDriver()

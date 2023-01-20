@@ -11,7 +11,6 @@ public class Onliner
     }
 
     [Test]
-    [Retry(3)]
     public void OnlinerTests()
     {
         //step 1
@@ -76,7 +75,7 @@ public class Onliner
         Assert.That(Driver.Title, Does.Contain("Сравнить"));
 
         // 7th step
-        Actions action = new Actions(Driver);
+        var action = new Actions(Driver);
         var descriptionTable = Driver.FindElement(
             By.XPath("//table//tbody[4]//tr[4]//td[contains(@class,'product-table__cell')][1]"));
         action.MoveToElement(descriptionTable);
@@ -91,27 +90,31 @@ public class Onliner
         Assert.That(descriptionText.GetAttribute("class"), Does.Contain("product-table-tip__trigger_visible"));
 
         // 8th step
-        var expectedResult =
+        const string descriptionParagraph =
             "Краткая информация об отличиях товара от конкурентных моделей и аналогов, сведения о позиционировании на рынке, преемственности и др.";
         description = Driver.FindElement(By.XPath("//*[contains(@data-tip-term , 'Описание')]"));
-        Assert.That(description.GetAttribute("data-tip-text"), Does.Contain(expectedResult));
+        Assert.That(description.GetAttribute("data-tip-text"), Is.EqualTo(descriptionParagraph));
 
         // 9th step
         Driver.Navigate().Back();
-        Assert.That(Driver.Title, Does.Contain("Мобильные телефоны Apple"));
+        Assert.That(Driver.Title, Is.EqualTo("Мобильные телефоны Apple купить в Минске"));
     }
     [TearDown]
     public void QuitDriver()
     {
         Driver.Quit();
     }
-    public void ScrollToView(IWebElement element)
+    private void ScrollToView(IWebElement element)
     {
-        if (element.Location.Y > 200)
+        switch (element.Location.Y)
         {
-            var js = $"window.scrollTo({0}, {element.Location.Y-80})";
-            IJavaScriptExecutor scriptExecutor= Driver as IJavaScriptExecutor;
-            scriptExecutor.ExecuteScript(js);
+            case > 200:
+            {
+                var js = $"window.scrollTo({0}, {element.Location.Y-80})";
+                var scriptExecutor= Driver as IJavaScriptExecutor ?? throw new InvalidOperationException();
+                scriptExecutor?.ExecuteScript(js);
+                break;
+            }
         }
     }
 }
