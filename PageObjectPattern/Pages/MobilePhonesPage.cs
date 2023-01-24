@@ -22,10 +22,10 @@ public class MobilePhonesPage : BasePage
     private IWebElement ContainsHonor;
 
     [FindsBy(How = How.XPath,
-        Using = "/html/body/div[1]/div/div/div/div/div/div[2]/div[1]/div[4]/div[3]/div[4]/div[2]/div/div[1]/div[1]")]
+        Using = "//div[@id='schema-products']/div[2]/div[contains(@class,'schema-product_narrow-sizes')]/div[contains(@class,'schema-product__part_1')]//label[@class='schema-product__control']")]
     private IWebElement FirstProduct;
     
-    [FindsBy(How = How.XPath, Using = "/html/body/div[1]/div/div/div/div/div/div[2]/div[1]/div[4]/div[3]/div[4]/div[5]/div/div[1]/div[1]")]
+    [FindsBy(How = How.XPath, Using = "//div[@id='schema-products']/div[5]/div[contains(@class,'schema-product_narrow-sizes')]/div[contains(@class,'schema-product__part_1')]//label[@class='schema-product__control']")]
     private IWebElement ThirdProduct;
     
     [FindsBy(How = How.XPath, Using = "//a[@class='compare-button__sub compare-button__sub_main']")]
