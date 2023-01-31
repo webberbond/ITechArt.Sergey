@@ -9,8 +9,6 @@ public class HoversPage : BasePage
         PageFactory.InitElements(webDriver, this);
     }
 
-    private WebDriverWait Wait => new(WebDriver, TimeSpan.FromSeconds(5));
-
     public enum ImageId
     {
         Image1 = 1,

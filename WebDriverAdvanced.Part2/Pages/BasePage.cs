@@ -17,11 +17,11 @@ public abstract class BasePage
 
     private const string UrlKey = "url";
 
-    private string BaseUrl = Configurator.GetConfiguration().GetSection(UrlKey).Value;
+    private readonly string _baseUrl = Configurator.GetConfiguration().GetSection(UrlKey).Value;
 
     public void OpenPage()
     {
-        var uri = new Uri(BaseUrl.TrimEnd('/') + UrlPath, UriKind.Absolute);
+        var uri = new Uri(_baseUrl.TrimEnd('/') + UrlPath, UriKind.Absolute);
         WebDriver.Navigate().GoToUrl(uri);
     }
 
@@ -34,7 +34,7 @@ public abstract class BasePage
             {
                 isOpened = UniqueWebElement.Displayed;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 isOpened = false;
             }

@@ -25,7 +25,7 @@ public class UploadFilePage : BasePage
 
     private const string NameOfFile = "SeleniumPicture.png";
 
-    private static string ImagePath = Configurator.PathToDefaultDirectory + NameOfFile;
+    private static readonly string ImagePath = Configurator.PathToDefaultDirectory + NameOfFile;
 
 
     public void UploadPicture()

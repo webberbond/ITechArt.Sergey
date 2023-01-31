@@ -1,8 +1,8 @@
 ﻿namespace WebDriverBasics.Utilities;
 
-public class Checks : DownloadFilePage
+public abstract class Checks : DownloadFilePage
 {
-    public Checks(IWebDriver webDriver) : base(webDriver)
+    protected Checks(IWebDriver webDriver) : base(webDriver)
     {
     }
 

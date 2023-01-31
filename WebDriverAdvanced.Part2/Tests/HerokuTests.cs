@@ -1,5 +1,3 @@
-using WebDriverBasics.Pages;
-
 namespace WebDriverBasics.Tests;
 
 public class Onliner : BaseTest
@@ -69,20 +67,20 @@ public class Onliner : BaseTest
     [TestCase(HoversPage.ImageId.Image1)]
     [TestCase(HoversPage.ImageId.Image2)]
     [TestCase(HoversPage.ImageId.Image3)]
-    public void Hovers(HoversPage.ImageId imageID)
+    public void Hovers(HoversPage.ImageId imageId)
     {
         HoversPage.OpenPage();
         Assert.True(HoversPage.IsPageOpened);
 
-        HoversPage.HoverOverImage(imageID);
-        var result = HoversPage.ReadSubHeaderTextForImage(imageID);
-        Assert.That(result, Is.EqualTo("name: user" + (int) imageID));
+        HoversPage.HoverOverImage(imageId);
+        var result = HoversPage.ReadSubHeaderTextForImage(imageId);
+        Assert.That(result, Is.EqualTo("name: user" + (int) imageId));
 
 
-        HoversPage.HoverOverImage(imageID);
+        HoversPage.HoverOverImage(imageId);
         HoversPage.ClickViewProfileLink();
         result = WebDriver.Url;
-        Assert.That(result, Is.EqualTo("https://the-internet.herokuapp.com/users/" + (int) imageID));
+        Assert.That(result, Is.EqualTo("https://the-internet.herokuapp.com/users/" + (int) imageId));
 
         HoversPage.IsRightPage();
     }

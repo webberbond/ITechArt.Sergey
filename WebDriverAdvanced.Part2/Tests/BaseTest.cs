@@ -1,6 +1,4 @@
-﻿using WebDriverBasics.Pages;
-
-namespace WebDriverBasics.Tests;
+﻿namespace WebDriverBasics.Tests;
 
 public abstract class BaseTest
 {
@@ -32,5 +30,11 @@ public abstract class BaseTest
         DownloadFilePage = new DownloadFilePage(WebDriver);
         HoversPage = new HoversPage(WebDriver);
         WindowsPage = new WindowsPage(WebDriver);
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        WebDriver.Quit();
     }
 }

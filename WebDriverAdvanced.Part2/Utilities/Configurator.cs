@@ -1,6 +1,6 @@
 ﻿namespace WebDriverBasics.Utilities;
 
-public class Configurator
+public abstract class Configurator
 {
     public static IConfiguration GetConfiguration()
     {

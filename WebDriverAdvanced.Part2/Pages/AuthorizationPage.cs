@@ -22,7 +22,7 @@ public class AuthorizationPage : BasePage
     public void EnterCredentials()
     {
         WebDriver.Navigate()
-            .GoToUrl($"http://" + Username + ":" + Password + "@" + "the-internet.herokuapp.com/basic_auth");
+            .GoToUrl($"https://" + Username + ":" + Password + "@" + "the-internet.herokuapp.com/basic_auth");
     }
 
     public bool StringExists
