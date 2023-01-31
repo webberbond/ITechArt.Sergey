@@ -14,7 +14,7 @@ public abstract class Configurator
     public static readonly Browser Browser = Enum.Parse<Browser>(GetConfiguration().GetSection("browser").Value, true);
 
     public static readonly string PathToDefaultDirectory =
-        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources/");
+        Path.Combine(AppContext.BaseDirectory, "Resources\\");
 
     private static ChromeOptions GetSettings()
     {

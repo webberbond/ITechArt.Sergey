@@ -23,14 +23,14 @@ public class UploadFilePage : BasePage
     [FindsBy(How = How.XPath, Using = "//h3")]
     private IWebElement _successParagraph;
 
-    private const string NameOfFile = "SeleniumPicture.png";
+    private const string NameOfFile = "SeleniumPicture.jpg";
 
-    private static readonly string ImagePath = Configurator.PathToDefaultDirectory + NameOfFile;
+    private string _imagePath = Configurator.PathToDefaultDirectory + NameOfFile;
 
 
     public void UploadPicture()
     {
-        _chooseFileButton.SendKeys(ImagePath);
+        _chooseFileButton.SendKeys(_imagePath);
     }
 
     public void ClickUploadButton()

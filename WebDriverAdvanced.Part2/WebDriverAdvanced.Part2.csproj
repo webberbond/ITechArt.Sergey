@@ -34,4 +34,14 @@
         </None>
     </ItemGroup>
 
+    <ItemGroup>
+        <None Remove="Pictures\SeleniumPicture.png"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="Resources\SeleniumPicture.jpg">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
 </Project>
