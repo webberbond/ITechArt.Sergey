@@ -1,6 +1,6 @@
 ﻿namespace WebDriverBasics.Utilities;
 
-public class StringGenerator
+public abstract class StringGenerator
 {
     private static readonly Random Random = new();
 

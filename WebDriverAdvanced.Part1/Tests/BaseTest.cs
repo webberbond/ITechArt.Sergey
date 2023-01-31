@@ -1,4 +1,6 @@
-﻿public abstract class BaseTest
+﻿namespace WebDriverBasics.Tests;
+
+public abstract class BaseTest
 {
     protected IWebDriver WebDriver { get; private set; }
 
