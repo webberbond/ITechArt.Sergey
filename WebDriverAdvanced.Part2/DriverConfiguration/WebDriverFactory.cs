@@ -13,6 +13,7 @@ public class WebDriverFactory
             case Browser.Chrome:
                 driver = new ChromeDriver(Configurator.Settings);
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                driver = new ChromeDriver(Configurator.Settings);
                 return driver;
             case Browser.Edge:
                 driver = new EdgeDriver();

@@ -1,24 +1,27 @@
 ﻿namespace WebDriverBasics.Utilities;
 
-public abstract class Configurator
+public class Configurator
 {
-    public static readonly ChromeOptions Settings;
-    public static readonly string BaseUrl;
-    public static readonly Browser Browser;
-
-    static Configurator()
+    public static IConfiguration GetConfiguration()
     {
-        IConfiguration config = new ConfigurationBuilder()
-            .AddJsonFile(Path.Combine(AppContext.BaseDirectory, "Resources", "appsettings.json"))
-            .Build();
+        var path = Path.Combine(AppContext.BaseDirectory, "Resources", "appsettings.json");
+        var builder = new ConfigurationBuilder().AddJsonFile(path);
+        var config = builder.Build();
+        return config;
+    }
 
-        var chromeOptions = config.GetSection("startArguments").Get<string[]>();
-        Settings = new ChromeOptions();
-        Settings.AddArguments(chromeOptions);
+    public static readonly ChromeOptions Settings = GetSettings();
+    public static readonly Browser Browser = Enum.Parse<Browser>(GetConfiguration().GetSection("browser").Value, true);
 
-        var browserName = config.GetValue<string>("browser");
-        Browser = Enum.Parse<Browser>(browserName, true);
+    public static readonly string PathToDefaultDirectory =
+        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources/");
 
-        BaseUrl = config.GetValue<string>("Url");
+    private static ChromeOptions GetSettings()
+    {
+        var options = GetConfiguration().GetSection("startArguments").Get<string[]>();
+        var settings = new ChromeOptions();
+        settings.AddUserProfilePreference("download.default_directory", PathToDefaultDirectory);
+        settings.AddArguments(options);
+        return settings;
     }
 }

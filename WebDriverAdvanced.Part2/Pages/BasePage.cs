@@ -15,11 +15,13 @@ public abstract class BasePage
 
     protected abstract string UrlPath { get; }
 
-    protected abstract string _baseUrl { get; }
+    private const string UrlKey = "url";
+
+    private string BaseUrl = Configurator.GetConfiguration().GetSection(UrlKey).Value;
 
     public void OpenPage()
     {
-        var uri = new Uri(_baseUrl.TrimEnd('/') + UrlPath, UriKind.Absolute);
+        var uri = new Uri(BaseUrl.TrimEnd('/') + UrlPath, UriKind.Absolute);
         WebDriver.Navigate().GoToUrl(uri);
     }
 

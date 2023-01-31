@@ -8,6 +8,7 @@ public class Onliner : BaseTest
     public void Authorization()
     {
         AuthorizationPage.OpenPage();
+        AuthorizationPage.EnterCredentials();
 
         Assert.Multiple(() =>
         {
@@ -81,7 +82,7 @@ public class Onliner : BaseTest
         HoversPage.HoverOverImage(imageID);
         HoversPage.ClickViewProfileLink();
         result = WebDriver.Url;
-        Assert.That(result, Is.EqualTo("http://the-internet.herokuapp.com/users/" + (int) imageID));
+        Assert.That(result, Is.EqualTo("https://the-internet.herokuapp.com/users/" + (int) imageID));
 
         HoversPage.IsRightPage();
     }
@@ -93,6 +94,6 @@ public class Onliner : BaseTest
         Assert.True(DownloadFilePage.IsPageOpened);
 
         DownloadFilePage.Download();
-        DownloadFilePage.IfFileExists();
+        Checks.IfFileExists();
     }
 }

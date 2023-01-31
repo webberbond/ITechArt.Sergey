@@ -33,10 +33,4 @@ public abstract class BaseTest
         HoversPage = new HoversPage(WebDriver);
         WindowsPage = new WindowsPage(WebDriver);
     }
-
-    [TearDown]
-    public void TearDown()
-    {
-        WebDriver.Quit();
-    }
 }

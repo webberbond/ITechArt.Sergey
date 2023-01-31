@@ -9,9 +9,8 @@ public class WindowsPage : BasePage
         PageFactory.InitElements(webDriver, this);
     }
 
-    protected override string UrlPath => string.Empty;
+    protected override string UrlPath => "/windows";
 
-    protected override string _baseUrl => "http://the-internet.herokuapp.com/windows ";
 
     protected override By? UniqueWebLocator => By.XPath("//h3[normalize-space()='Opening a new window']");
 

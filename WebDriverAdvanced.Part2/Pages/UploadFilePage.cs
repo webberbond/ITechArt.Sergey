@@ -9,9 +9,8 @@ public class UploadFilePage : BasePage
         PageFactory.InitElements(webDriver, this);
     }
 
-    protected override string UrlPath => string.Empty;
+    protected override string UrlPath => "/upload";
 
-    protected override string _baseUrl => "http://the-internet.herokuapp.com/upload";
 
     protected override By? UniqueWebLocator => By.XPath("//h3[normalize-space()='File Uploader']");
 
@@ -24,10 +23,14 @@ public class UploadFilePage : BasePage
     [FindsBy(How = How.XPath, Using = "//h3")]
     private IWebElement _successParagraph;
 
+    private const string NameOfFile = "SeleniumPicture.png";
+
+    private static string ImagePath = Configurator.PathToDefaultDirectory + NameOfFile;
+
+
     public void UploadPicture()
     {
-        _chooseFileButton.SendKeys(
-            $"C:\\Users\\HomeUser\\Desktop\\WebDriverAdvanced.Part2\\WebDriverAdvanced.Part2\\Pictures\\SeleniumPicture.png");
+        _chooseFileButton.SendKeys(ImagePath);
     }
 
     public void ClickUploadButton()

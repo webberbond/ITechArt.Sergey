@@ -9,9 +9,8 @@ public class SliderPage : BasePage
         PageFactory.InitElements(webDriver, this);
     }
 
-    protected override string UrlPath => string.Empty;
+    protected override string UrlPath => "/horizontal_slider";
 
-    protected override string _baseUrl => "http://the-internet.herokuapp.com/horizontal_slider";
 
     protected override By? UniqueWebLocator => By.XPath("//h3[normalize-space()='Horizontal Slider']");
 

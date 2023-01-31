@@ -9,18 +9,21 @@ public class AuthorizationPage : BasePage
         PageFactory.InitElements(webDriver, this);
     }
 
-    protected override string UrlPath => string.Empty;
-
-    protected override string _baseUrl =>
-        "http://" + _username + ":" + _password + "@" + "the-internet.herokuapp.com/basic_auth";
+    protected override string UrlPath => "/basic_auth";
 
     protected override By UniqueWebLocator => By.XPath("//h3[normalize-space()='Basic Auth']");
 
     [FindsBy(How = How.CssSelector, Using = "div[class='example'] p")]
     private IWebElement _actualString;
 
-    private string _username = "admin";
-    private string _password = "admin";
+    private const string Username = "admin";
+    private const string Password = "admin";
+
+    public void EnterCredentials()
+    {
+        WebDriver.Navigate()
+            .GoToUrl($"http://" + Username + ":" + Password + "@" + "the-internet.herokuapp.com/basic_auth");
+    }
 
     public bool StringExists
     {

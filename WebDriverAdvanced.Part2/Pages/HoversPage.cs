@@ -18,9 +18,7 @@ public class HoversPage : BasePage
         Image3 = 3
     }
 
-    protected override string UrlPath => string.Empty;
-
-    protected override string _baseUrl => "http://the-internet.herokuapp.com/hovers";
+    protected override string UrlPath => "/hovers";
 
     protected override By UniqueWebLocator => By.XPath("//h3[normalize-space()='Hovers']");
 
