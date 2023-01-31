@@ -2,7 +2,7 @@
 
 public abstract class BasePage
 {
-    private readonly string _baseUrl = Configurator.BaseUrl;
+    private readonly string BaseUrl = Configurator.BaseUrl;
 
     protected BasePage(IWebDriver webDriver)
     {
@@ -37,7 +37,7 @@ public abstract class BasePage
 
     public void OpenPage()
     {
-        var uri = new Uri(_baseUrl.TrimEnd('/') + UrlPath, UriKind.Absolute);
+        var uri = new Uri(BaseUrl.TrimEnd('/') + UrlPath, UriKind.Absolute);
         WebDriver.Navigate().GoToUrl(uri);
     }
 }

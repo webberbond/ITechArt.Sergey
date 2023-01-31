@@ -3,6 +3,7 @@
 public class WidgetsPage : BasePage
 {
     private IWebDriver driver;
+
     public WidgetsPage(IWebDriver webDriver) : base(webDriver)
     {
         PageFactory.InitElements(webDriver, this);
@@ -20,13 +21,13 @@ public class WidgetsPage : BasePage
 
     [FindsBy(How = How.XPath, Using = "//button[@id='startStopButton']")]
     private IWebElement StartButton;
-    
+
     public void StopProgressBarOnSpecificPercent(string a)
     {
-        int i = 1;
+        var i = 1;
         while (i == 1)
         {
-            string b = ProgressBarLabel.Text;
+            var b = ProgressBarLabel.Text;
             if (a.Equals(b))
             {
                 StartButton.Click();

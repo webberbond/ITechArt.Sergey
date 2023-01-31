@@ -14,20 +14,11 @@ public class AlertsPage : BasePage
 
     protected override string UrlPath => string.Empty;
 
-    private readonly List<string> _expectedText = new()
+    private readonly List<string> ExpectedText = new()
     {
         "You clicked a button",
         "Do you confirm action?"
     };
-
-    private static readonly Random Random = new();
-
-    private static string RandomString(int length)
-    {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        return new string(Enumerable.Repeat(chars, length)
-            .Select(s => s[Random.Next(s.Length)]).ToArray());
-    }
 
     [FindsBy(How = How.XPath, Using = "//button[@id='alertButton']")]
     private IWebElement AlertButton;
@@ -71,7 +62,7 @@ public class AlertsPage : BasePage
     private IWebElement FrameBody => WebDriver.FindElement(By.TagName("body"));
 
     private IWebElement FrameHeader => WebDriver.FindElement(By.XPath("//h1[@id='sampleHeading']"));
-    
+
     public void GetAlert()
     {
         Alerts.Click();
@@ -87,7 +78,7 @@ public class AlertsPage : BasePage
                 WebDriver.SwitchTo().Alert();
                 return true;
             }
-            catch (NoAlertPresentException e)
+            catch (NoAlertPresentException)
             {
                 return false;
             }
@@ -106,14 +97,17 @@ public class AlertsPage : BasePage
             catch (NoAlertPresentException)
             {
                 return true;
-            }  
+            }
         }
     }
 
     public bool AlertTextEquals()
     {
         var alert = WebDriver.SwitchTo().Alert();
-        return alert.Text == _expectedText[0];
+        if (alert.Text == ExpectedText[0])
+            return true;
+
+        return false;
     }
 
     public void AcceptAlert()
@@ -130,7 +124,10 @@ public class AlertsPage : BasePage
     public bool ConfirmBoxTextEquals()
     {
         var alert = WebDriver.SwitchTo().Alert();
-        return alert.Text == _expectedText[1];
+        if (alert.Text == ExpectedText[1])
+            return true;
+
+        return false;
     }
 
     public bool ConfirmBoxDisplaySuccess()
@@ -146,7 +143,7 @@ public class AlertsPage : BasePage
     public void SendTextToPromptBox()
     {
         var alert = WebDriver.SwitchTo().Alert();
-        alert.SendKeys(RandomString(10));
+        alert.SendKeys(StringGenerator.RandomString(10));
         alert.Accept();
     }
 
@@ -169,7 +166,7 @@ public class AlertsPage : BasePage
 
     public bool IsParentTextDisplayed()
     {
-        if (FrameBody.Text.Contains("Parent frame")) 
+        if (FrameBody.Text.Contains("Parent frame"))
             return true;
 
         return false;
@@ -182,7 +179,7 @@ public class AlertsPage : BasePage
 
     public bool IsChildTextDisplayed()
     {
-        if (FrameBody.Text.Contains("Child Iframe")) 
+        if (FrameBody.Text.Contains("Child Iframe"))
             return true;
 
         return false;
@@ -249,7 +246,7 @@ public class AlertsPage : BasePage
     public bool MainPageOpen()
     {
         WebDriver.SwitchTo().Window(WebDriver.WindowHandles.Last());
-        
+
         var homeBanner = WebDriver.FindElement(By.XPath("//div[@class='home-banner']"));
 
         if (homeBanner.Displayed)

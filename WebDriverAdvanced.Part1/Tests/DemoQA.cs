@@ -84,7 +84,7 @@ public class DemoQA : BaseTest
         Assert.That(AlertsPage.IsNewPageOpened());
 
         AlertsPage.CloseTab();
-        Assert.That(WebDriver.Title, Is.EqualTo("ToolsQA"));
+        Assert.That(WebDriver.Title, Is.EqualTo("DEMOQA"));
 
         AlertsPage.LinksPageOpen();
         AlertsPage.HomeButtonClick();
