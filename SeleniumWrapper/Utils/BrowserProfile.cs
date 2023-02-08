@@ -1,6 +1,4 @@
-using System.ComponentModel;
-
-namespace Selenium.Lection.SimpleWrapper.Core;
+namespace SeleniumWrapper.Utils;
 
 public class BrowserProfile
 {
@@ -24,5 +22,6 @@ public class BrowserProfile
 public enum BrowserEnum
 {
     Chrome,
-    Opera
+    Edge,
+    FireFox
 }

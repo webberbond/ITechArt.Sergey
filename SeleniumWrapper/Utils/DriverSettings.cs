@@ -1,6 +1,4 @@
-using OpenQA.Selenium;
-
-namespace Selenium.Lection.SimpleWrapper.Core;
+namespace SeleniumWrapper.Utils;
 
 public abstract class DriverSettings
 {

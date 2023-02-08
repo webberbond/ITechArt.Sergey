@@ -1,7 +1,4 @@
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-
-namespace Selenium.Lection.SimpleWrapper.Core;
+namespace SeleniumWrapper.Utils;
 
 public class ChromeSettings : DriverSettings
 {

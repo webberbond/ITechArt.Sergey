@@ -1,20 +1,23 @@
-﻿using SeleniumWrapper.Elements;
+﻿using SeleniumWrapper.Helpers;
 
 namespace SeleniumWrapper.Forms;
 
 public abstract class BaseForm
 {
-    protected BaseElement Element;
-    protected string Name;
+    protected BaseElement UniqueElement;
 
-    protected BaseForm(BaseElement element, string name)
+    protected BaseForm(BaseElement uniqueElement)
     {
-        Element = element;
-        Name = name;
+        UniqueElement = uniqueElement;
+    }
+    
+    private bool IsDisplayed()
+    {
+        return UniqueElement.IsDisplayed();
     }
 
-    public bool IsDisplayed()
+    public void WaitForOpen()
     {
-        return Element.IsDisplayed();
+        WaitUtil.WaitUntil((IsDisplayed()));
     }
 }

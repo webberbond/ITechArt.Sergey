@@ -1,4 +1,4 @@
-namespace Selenium.Lection.SimpleWrapper.Core;
+namespace SeleniumWrapper.Utils;
 
 public static class BrowserService
 {
@@ -41,11 +41,5 @@ public static class BrowserService
         BrowserFactory =  new LocalBrowserFactory(BrowserProfile);
     }
 
-    private static BrowserProfile BrowserProfile
-    {
-        get
-        {
-            return new BrowserProfile();
-        }
-    }
+    private static BrowserProfile BrowserProfile => new BrowserProfile();
 }

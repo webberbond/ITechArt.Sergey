@@ -1,16 +1,12 @@
-using OpenQA.Selenium;
-
-namespace Selenium.Lection.SimpleWrapper.Core;
+﻿namespace SeleniumWrapper.Utils;
 
 public class Browser : IBrowser
 {
-    public WebDriver WebDriver { get; }
+    public static WebDriver WebDriver { get; private set; }
 
     public Browser(WebDriver webDriver)
     {
         WebDriver = webDriver;
-        MaximizeWindow();
-        SetImplicitTime();
     }
 
     public void GoToUrl(Uri uri)
@@ -23,12 +19,12 @@ public class Browser : IBrowser
         WebDriver.Navigate().GoToUrl(uri);
     }
 
-    public void Quit()
+    public static void Quit()
     {
         WebDriver.Quit();
     }
 
-    private void MaximizeWindow()
+    public static void MaximizeWindow()
     {
         WebDriver.Manage().Window.Maximize();
     }
