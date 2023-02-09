@@ -4,7 +4,7 @@ namespace WebDriverBasics.Pages;
 
 public class AuthPage : BasePage
 {
-    private IWebDriver driver;
+    private IWebDriver _driver;
 
     public AuthPage(IWebDriver webDriver) : base(webDriver)
     {
@@ -17,22 +17,22 @@ public class AuthPage : BasePage
     protected override string UrlPath => string.Empty;
 
     [FindsBy(How = How.XPath, Using = "//input[@placeholder='Ник или e-mail']")]
-    private IWebElement NickNameInput;
+    private IWebElement _nickNameInput;
 
     [FindsBy(How = How.XPath, Using = "//input[@placeholder='Пароль']")]
-    private IWebElement PasswordInput;
+    private IWebElement _passwordInput;
 
     [FindsBy(How = How.XPath, Using = "//button[contains(text(),'Войти')]")]
-    private IWebElement LoginButton;
+    private IWebElement _loginButton;
 
     [FindsBy(How = How.XPath, Using = "//iframe[@title='reCAPTCHA']")]
-    private IWebElement CaptchaFrame;
+    private IWebElement _captchaFrame;
 
     [FindsBy(How = How.Id, Using = "recaptcha-anchor")]
-    private IWebElement CaptchaButton;
+    private IWebElement _captchaButton;
 
     [FindsBy(How = How.XPath, Using = "//div[@class='b-news-layer']")]
-    private IWebElement NewsLayer;
+    private IWebElement _newsLayer;
 
     [AllureStep("Input nickname as {0} and password as {1}")]
     public void InputNicknameAndPassword()
@@ -40,21 +40,21 @@ public class AuthPage : BasePage
         const string nickname = "2846794";
         const string password = "ItechArt12345";
 
-        Logger.Instance.Info($"Input nickname {nickname} in {NickNameInput}");
-        NickNameInput.SendKeys(nickname);
+        Logger.Instance.Info($"Input nickname {nickname} in {_nickNameInput}");
+        _nickNameInput.SendKeys(nickname);
 
-        Logger.Instance.Info($"Input password {password} in {PasswordInput}");
-        PasswordInput.SendKeys(password);
+        Logger.Instance.Info($"Input password {password} in {_passwordInput}");
+        _passwordInput.SendKeys(password);
 
-        PasswordInput.Submit();
+        _passwordInput.Submit();
     }
 
     [AllureStep("Pass Captcha")]
     public void CaptchaPass()
     {
-        WebDriver.SwitchTo().Frame(CaptchaFrame);
-        Logger.Instance.Info($"Click on {CaptchaButton}");
-        CaptchaButton.Click();
+        WebDriver.SwitchTo().Frame(_captchaFrame);
+        Logger.Instance.Info($"Click on {_captchaButton}");
+        _captchaButton.Click();
     }
 
     public bool IsAuthenticationPass()
@@ -62,7 +62,7 @@ public class AuthPage : BasePage
         var isPassed = false;
         try
         {
-            if (NewsLayer.Displayed)
+            if (_newsLayer.Displayed)
             {
                 Logger.Instance.Info("Successfully authenticated");
                 isPassed = true;

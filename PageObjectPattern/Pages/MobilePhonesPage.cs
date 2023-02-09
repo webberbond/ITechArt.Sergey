@@ -4,7 +4,7 @@ namespace WebDriverBasics.Pages;
 
 public class MobilePhonesPage : BasePage
 {
-    private IWebDriver driver;
+    private IWebDriver _driver;
 
     public MobilePhonesPage(IWebDriver webDriver) : base(webDriver)
     {

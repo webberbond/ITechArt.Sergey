@@ -4,7 +4,7 @@ namespace WebDriverBasics.Pages;
 
 public class HomePage : BasePage
 {
-    private IWebDriver driver;
+    private IWebDriver _driver;
 
     public HomePage(IWebDriver webDriver) : base(webDriver)
     {
@@ -17,24 +17,24 @@ public class HomePage : BasePage
     protected override string UrlPath => string.Empty;
 
     [FindsBy(How = How.XPath, Using = "//span[contains(text(),'Мобильные телефоны')]")]
-    private IWebElement MobilePhonesTab;
+    private IWebElement _mobilePhonesTab;
 
     [FindsBy(How = How.XPath, Using = "//div[@class='auth-bar__item auth-bar__item--text']")]
-    private IWebElement AuthButton;
+    private IWebElement _authButton;
 
 
     [AllureStep("Open Mobile Phones Tab")]
     public MobilePhonesPage ClickTab_MobilePhones()
     {
-        Logger.Instance.Info($"Open {MobilePhonesTab}");
-        MobilePhonesTab.Click();
+        Logger.Instance.Info($"Open {_mobilePhonesTab}");
+        _mobilePhonesTab.Click();
         return new MobilePhonesPage(WebDriver);
     }
 
     public AuthPage ClickButton_Auth()
     {
-        Logger.Instance.Info($"Click auth{AuthButton}");
-        AuthButton.Click();
+        Logger.Instance.Info($"Click auth{_authButton}");
+        _authButton.Click();
 
         return new AuthPage(WebDriver);
     }

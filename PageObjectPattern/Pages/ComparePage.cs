@@ -4,7 +4,7 @@ namespace WebDriverBasics.Pages;
 
 public class ComparePage : BasePage
 {
-    private IWebDriver driver;
+    private IWebDriver _driver;
 
     public ComparePage(IWebDriver webDriver) : base(webDriver)
     {
@@ -17,32 +17,32 @@ public class ComparePage : BasePage
     protected override string UrlPath => string.Empty;
 
     [FindsBy(How = How.XPath, Using = "//table//tbody[4]//tr[4]//td[contains(@class,'product-table__cell')][1]")]
-    private IWebElement descriptionTable;
+    private IWebElement _descriptionTable;
 
     [FindsBy(How = How.XPath, Using = "//table//tbody[4]//tr[4]//td[contains(@class,'product-table__cell')][1]//div")]
-    private IWebElement description;
+    private IWebElement _description;
 
     [FindsBy(How = How.XPath, Using = "//*[contains(@data-tip-term , 'Описание')]")]
-    private IWebElement descriptionText;
+    private IWebElement _descriptionText;
 
     private const string DescriptionParagraph =
         "Краткая информация об отличиях товара от конкурентных моделей и аналогов, сведения о позиционировании на рынке, преемственности и др.";
 
     public bool IsDescriptionOpened =>
-        descriptionText.GetAttribute("class").Contains("product-table-tip__trigger_visible");
+        _descriptionText.GetAttribute("class").Contains("product-table-tip__trigger_visible");
 
-    public bool IsDescriptionRight => descriptionText.GetAttribute("data-tip-text").Contains(DescriptionParagraph);
+    public bool IsDescriptionRight => _descriptionText.GetAttribute("data-tip-text").Contains(DescriptionParagraph);
 
 
     [AllureStep("Get Description Table")]
     public void GetDescriptionTable()
     {
         var action = new Actions(WebDriver);
-        action.MoveToElement(descriptionTable);
-        action.MoveToElement(description);
+        action.MoveToElement(_descriptionTable);
+        action.MoveToElement(_description);
 
-        Logger.Instance.Info($"Getting {descriptionText}");
-        descriptionText.Click();
+        Logger.Instance.Info($"Getting {_descriptionText}");
+        _descriptionText.Click();
     }
 
     [AllureStep("Get Previous Page")]
