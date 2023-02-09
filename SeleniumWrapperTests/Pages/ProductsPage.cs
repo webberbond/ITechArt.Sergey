@@ -39,7 +39,7 @@ public class ProductsPage : BasePage
 
     public string Count()
     {
-        Thread.Sleep(2000);
+        Thread.Sleep(3000);
         return _itemsTotalCount.GetInnerHtml();
     }
 }

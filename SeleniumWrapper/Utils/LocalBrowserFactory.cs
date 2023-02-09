@@ -14,9 +14,9 @@ public class LocalBrowserFactory : BrowserFactory
         get
         {
             var browserName = BrowserModel.BrowserName;
-            var driverSettingsStrings = BrowserModel.BrowserSettings;
+            var driverSettingsOptions = BrowserModel.BrowserSettings;
             var driverSettings = new ChromeOptions();
-            driverSettings.AddArguments(driverSettingsStrings);
+            driverSettings.AddArguments(driverSettingsOptions);
 
             switch (browserName)
             {
@@ -34,5 +34,6 @@ public class LocalBrowserFactory : BrowserFactory
 public enum BrowserEnum
 {
     Chrome,
-    Opera
+    Edge,
+    FireFox
 }

@@ -5,10 +5,11 @@ public class Browser : IBrowser
     public WebDriverWait BrowserWait { get; set; }
     public WebDriver WebDriver { get; }
 
+    public DriverOptions Options { get; set; }
+
     public Browser(WebDriver webDriver)
     {
         WebDriver = webDriver;
-        MaximizeWindow();
         SetImplicitTime();
     }
 
