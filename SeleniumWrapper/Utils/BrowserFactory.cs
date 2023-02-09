@@ -2,14 +2,7 @@ namespace SeleniumWrapper.Utils;
 
 public abstract class BrowserFactory
 {
-    public BrowserProfile BrowserProfile { get; }
+    public Browser GetBrowser => new(WebDriver);
 
-    protected BrowserFactory(BrowserProfile browserProfile)
-    {
-        BrowserProfile = browserProfile;
-    }
-    
-    public Browser GetBrowser => new Browser(WebDriver);
-    
     protected abstract WebDriver WebDriver { get; }
 }

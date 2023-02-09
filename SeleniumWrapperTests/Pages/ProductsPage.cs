@@ -1,34 +1,45 @@
-﻿using OpenQA.Selenium;
-using SeleniumExtras.PageObjects;
-using SeleniumWrapper.Elements;
-using SeleniumWrapper.Forms;
-using SeleniumWrapper.Pages;
-using SeleniumWrapper.Tests;
+﻿namespace SeleniumWrapperTests.Pages;
 
-namespace SeleniumWrapperTests.Pages;
-
-public class ProductsPage : Page
+public class ProductsPage : BasePage
 {
-   
-
-    private static  Button FirstProduct = new(By.XPath("(//img[@alt='yes'])[1]"), "FirstProduct");
-    private static  Button SecondProduct = new(By.XPath("(//img[@alt='yes'])[2]"), "SecondProduct");
-
-    private static  Button ShoppingCart = new(By.XPath("//a[@class='karzinka']"), "ShoppingCart");
-
-    public static void AddProducts()
+    public ProductsPage(BaseElement uniqueElement, string pageName) : base(uniqueElement, pageName)
     {
-        FirstProduct.Click();
-        SecondProduct.Click();
     }
 
-    public static void ClickShoppingCart()
+    public ProductsPage(Browser browser) : base(browser)
     {
-        ShoppingCart.Click();
     }
 
-    public ProductsPage(BaseElement uniqueElement) : base(uniqueElement)
+    protected override string UrlPath => string.Empty;
+
+    protected override By UniqueWebLocator => By.XPath("//h3[contains(text(),'Телевизоры')]");
+
+    private readonly Button _firstProduct = new(By.XPath("(//img[@alt='yes'])[1]"), "FirstProduct");
+    private readonly Button _secondProduct = new(By.XPath("(//img[@alt='yes'])[2]"), "SecondProduct");
+    private readonly Button _shoppingCart = new(By.XPath("//a[@class='karzinka']"), "ShoppingCart");
+    private readonly Label _itemsTotalCount = new(By.XPath("//*[@class= 'totalCount']"), "ItemsTotalCount");
+
+    private readonly Button _order = new(By.XPath("//a[@class='karzinka-open-bottom-block-a2']"), "Order");
+
+    public void AddProducts()
     {
-        UniqueElement = new TextField(By.XPath("//h3[contains(text(),'Телевизоры')]"), "Logo");
+        _firstProduct.Click();
+        _secondProduct.Click();
+    }
+
+    public void ClickShoppingCart()
+    {
+        _shoppingCart.Click();
+    }
+
+    public void MakeOrder()
+    {
+        _order.Click();
+    }
+
+    public string Count()
+    {
+        Thread.Sleep(2000);
+        return _itemsTotalCount.GetInnerHtml();
     }
 }

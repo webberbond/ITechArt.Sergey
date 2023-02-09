@@ -1,27 +1,10 @@
 namespace SeleniumWrapper.Utils;
 
-public class BrowserProfile
+public record BrowserProfile
 {
-    public BrowserEnum BrowserName => BrowserEnum.Chrome;
+    public BrowserEnum BrowserName { get; init; }
 
-    public DriverSettings DriverSettings
-    {
-        get
-        {
-            switch (BrowserName)
-            {
-                case BrowserEnum.Chrome:
-                    return new ChromeSettings();
-                default:
-                    throw new InvalidOperationException($"Driver settings for browser '{BrowserName}' are not defined");
-            }
-        }
-    }
-}
+    public string[]? BrowserSettings { get; init; }
 
-public enum BrowserEnum
-{
-    Chrome,
-    Edge,
-    FireFox
-}
+    public int ConditionTimeWait { get; init; }
+};

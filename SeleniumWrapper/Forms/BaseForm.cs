@@ -1,23 +1,31 @@
-﻿using SeleniumWrapper.Helpers;
-
-namespace SeleniumWrapper.Forms;
+﻿namespace SeleniumWrapper.Forms;
 
 public abstract class BaseForm
 {
-    protected BaseElement UniqueElement;
-
-    protected BaseForm(BaseElement uniqueElement)
+    protected BaseForm(Browser browser)
     {
-        UniqueElement = uniqueElement;
-    }
-    
-    private bool IsDisplayed()
-    {
-        return UniqueElement.IsDisplayed();
     }
 
-    public void WaitForOpen()
+    protected abstract By UniqueWebLocator { get; }
+
+
+    private BaseElement UniqueElement => new Label(UniqueWebLocator, "Unique Element ");
+
+    protected BaseForm(BaseElement uniqueElement, string nameOfPage)
     {
-        WaitUtil.WaitUntil((IsDisplayed()));
+    }
+
+    public bool IsPageOpened => UniqueElement.IsDisplayed();
+
+    protected void WaitForPageOpened()
+    {
+        try
+        {
+            BrowserService.Browser.BrowserWait.Until(driver => driver.FindElement(UniqueWebLocator).Displayed);
+        }
+        catch (WebDriverTimeoutException e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

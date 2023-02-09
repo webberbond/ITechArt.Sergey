@@ -1,4 +1,4 @@
-namespace Selenium.Lection.SimpleWrapper.Core;
+namespace SeleniumWrapper.Utils;
 
 public interface IBrowser
 {

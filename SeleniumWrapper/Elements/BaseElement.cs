@@ -1,11 +1,12 @@
 ﻿using Logger = SeleniumWrapper.Helpers.Logger;
+
 namespace SeleniumWrapper.Elements;
 
 public abstract class BaseElement
 {
-    protected By Locator { get; }
+    private By Locator { get; }
 
-    protected string Name { get; }
+    private string Name { get; }
 
     protected BaseElement(By locator, string name)
     {
@@ -13,17 +14,17 @@ public abstract class BaseElement
         Name = name;
     }
 
-    private WebDriver WebDriver => Browser.WebDriver;
-    
+    private WebDriver WebDriver => BrowserService.Browser.WebDriver;
+
     public void Click()
     {
-        Logger.Instance.Info("Clicking");
+        Logger.Instance.Info($"Click {Name} element");
         FindElement().Click();
     }
 
     public string GetText()
     {
-        Logger.Instance.Info("Getting text");
+        Logger.Instance.Info($"Take text from {Name} element");
         return FindElement().Text;
     }
 
@@ -34,7 +35,7 @@ public abstract class BaseElement
 
     protected IWebElement FindElement()
     {
-        Logger.Instance.Info("Finding element");
+        Logger.Instance.Info($"Find element with locator {Locator}");
         return WebDriver.FindElement(Locator);
     }
 }

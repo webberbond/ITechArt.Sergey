@@ -1,34 +1,38 @@
-using System.ComponentModel;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using WebDriverManager.DriverConfigs.Impl;
-
-namespace Selenium.Lection.SimpleWrapper.Core;
+namespace SeleniumWrapper.Utils;
 
 public class LocalBrowserFactory : BrowserFactory
 {
-    public LocalBrowserFactory(BrowserProfile browserProfile) : base(browserProfile)
+    private BrowserProfile BrowserModel { get; }
+
+    public LocalBrowserFactory(BrowserProfile browserModel)
     {
+        BrowserModel = browserModel;
     }
 
     protected override WebDriver WebDriver
     {
         get
         {
-            var browserName = BrowserProfile.BrowserName;
-            var driverSettings = BrowserProfile.DriverSettings;
-            WebDriver webDriver;
+            var browserName = BrowserModel.BrowserName;
+            var driverSettingsStrings = BrowserModel.BrowserSettings;
+            var driverSettings = new ChromeOptions();
+            driverSettings.AddArguments(driverSettingsStrings);
 
             switch (browserName)
             {
                 case BrowserEnum.Chrome:
-                    var options = (ChromeOptions)driverSettings.DriverOptions;
-                    new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig());
-                    webDriver = new ChromeDriver(options);
+                    var options = driverSettings;
+                    WebDriver webDriver = new ChromeDriver(options);
                     return webDriver;
                 default:
                     throw new InvalidEnumArgumentException($"WebDriver for browser {browserName} is not supported");
             }
         }
     }
+}
+
+public enum BrowserEnum
+{
+    Chrome,
+    Opera
 }

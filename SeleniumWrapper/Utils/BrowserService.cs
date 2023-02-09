@@ -2,22 +2,33 @@ namespace SeleniumWrapper.Utils;
 
 public static class BrowserService
 {
-    private static readonly ThreadLocal<IBrowser> BrowserContainer = new ThreadLocal<IBrowser>();
-    
-    private static readonly ThreadLocal<BrowserFactory> BrowserFactoryContainer = new ThreadLocal<BrowserFactory>();
+    private static BrowserProfile BrowserProfile { get; set; }
+    private static readonly ThreadLocal<IBrowser> BrowserContainer = new();
 
-    private static bool IsApplicationStarted() => BrowserContainer.IsValueCreated && BrowserContainer.Value.IsStarted;
+    private static readonly ThreadLocal<BrowserFactory> BrowserFactoryContainer = new();
 
-    public static Browser Browser => (Browser)GetBrowser();
+    private static bool IsApplicationStarted()
+    {
+        return BrowserContainer.IsValueCreated && BrowserContainer.Value.IsStarted;
+    }
+
+    public static Browser StartBrowser(BrowserProfile browserModel)
+    {
+        BrowserProfile = browserModel;
+        var browser = (Browser) GetBrowser();
+        browser.BrowserWait =
+            new WebDriverWait(Browser.WebDriver, TimeSpan.FromSeconds(BrowserProfile.ConditionTimeWait));
+        return browser;
+    }
+
+    public static Browser Browser => (Browser) GetBrowser();
+
 
     public static bool IsBrowserStarted => IsApplicationStarted();
 
     private static IBrowser GetBrowser()
     {
-        if (!IsApplicationStarted())
-        {
-            BrowserContainer.Value = BrowserFactory.GetBrowser;
-        }
+        if (!IsApplicationStarted()) BrowserContainer.Value = BrowserFactory.GetBrowser;
 
         return BrowserContainer.Value;
     }
@@ -26,20 +37,15 @@ public static class BrowserService
     {
         get
         {
-            if (!BrowserFactoryContainer.IsValueCreated)
-            {
-                SetDefaultFactory();
-            }
-            
+            if (!BrowserFactoryContainer.IsValueCreated) SetDefaultFactory();
+
             return BrowserFactoryContainer.Value;
         }
         set => BrowserFactoryContainer.Value = value;
     }
-    
+
     private static void SetDefaultFactory()
     {
-        BrowserFactory =  new LocalBrowserFactory(BrowserProfile);
+        BrowserFactory = new LocalBrowserFactory(BrowserProfile);
     }
-
-    private static BrowserProfile BrowserProfile => new BrowserProfile();
 }
