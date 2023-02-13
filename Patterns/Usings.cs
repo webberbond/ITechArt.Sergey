@@ -1,0 +1,9 @@
+﻿global using SeleniumWrapper.Helpers;
+global using SeleniumWrapper.Utils;
+global using Patterns.Pages;
+global using Microsoft.Extensions.Configuration;
+global using Patterns.Utils;
+global using OpenQA.Selenium;
+global using SeleniumWrapper.Elements;
+global using SeleniumWrapper.Forms;
+global using Patterns.Config;
