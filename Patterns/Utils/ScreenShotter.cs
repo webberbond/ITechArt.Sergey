@@ -1,9 +1,4 @@
-﻿using Allure.Net.Commons;
-using NUnit.Framework;
-using NUnit.Framework.Interfaces;
-using Patterns.Tests;
-
-namespace Patterns.Utils;
+﻿namespace Patterns.Utils;
 
 public abstract class ScreenShotting : BaseTest
 {

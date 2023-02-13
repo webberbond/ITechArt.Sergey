@@ -1,6 +1,4 @@
-﻿using SeleniumExtras.WaitHelpers;
-
-namespace Patterns.Pages;
+﻿namespace Patterns.Pages;
 
 public sealed class LoginPage : BasePage
 {
@@ -53,5 +51,26 @@ public sealed class LoginPage : BasePage
     public string GetErrorMessage()
     {
         return _errorContainer.GetText();
+    }
+
+    public LoginPage EnterUsername(SauceDemo sauceDemo)
+    {
+        _login.SendText(sauceDemo.GetUserName());
+
+        return this;
+    }
+    
+    public LoginPage EnterPassword(SauceDemo sauceDemo)
+    {
+        _password.SendText(sauceDemo.GetPassword());
+
+        return this;
+    }
+    
+    public LoginPage ClickLogib()
+    {
+        _loginButton.Click();
+
+        return this;
     }
 }

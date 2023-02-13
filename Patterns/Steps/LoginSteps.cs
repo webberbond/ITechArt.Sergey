@@ -1,6 +1,4 @@
-﻿using NUnit.Framework;
-
-namespace Patterns.Steps;
+﻿namespace Patterns.Steps;
 
 public class LoginSteps
 {
@@ -27,7 +25,8 @@ public class LoginSteps
 
     public LoginSteps ValidateIsProductsPageOpened()
     {
-        _productsPage.IsPageOpened();
+        _productsPage
+            .IsPageOpened();
 
         return this;
     }

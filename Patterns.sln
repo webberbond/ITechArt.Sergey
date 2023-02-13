@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patterns", "Patterns\Patterns.csproj", "{40D7E2AA-D8FC-4CF2-94C3-89F6B9E41794}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeleniumWrapper", "..\SeleniumWrapper\SeleniumWrapper\SeleniumWrapper.csproj", "{F23EBD34-59DB-4F30-A7E1-314D482D4E08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeleniumWrapper", "SeleniumWrapper\SeleniumWrapper.csproj", "{F23EBD34-59DB-4F30-A7E1-314D482D4E08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
