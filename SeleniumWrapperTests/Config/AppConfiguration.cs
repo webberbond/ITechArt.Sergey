@@ -21,9 +21,7 @@ public abstract class AppConfiguration
             {
                 BrowserName =
                     Enum.Parse<BrowserEnum>(Configurator.GetConfiguration().GetSection(BrowserKey).Value!, true),
-                BrowserSettings = Configurator.GetConfiguration().GetSection(StartArgumentKey).Get<string[]>(),
-                ConditionTimeWait =
-                    Convert.ToInt32(Configurator.GetConfiguration().GetSection(ConditionTimeoutKey).Value)
+                BrowserSettings = Configurator.GetConfiguration().GetSection(StartArgumentKey).Get<string[]>()
             };
             return browserModel;
         }

@@ -16,8 +16,6 @@ public static class BrowserService
     {
         BrowserProfile = browserModel;
         var browser = (Browser) GetBrowser();
-        browser.BrowserWait =
-            new WebDriverWait(Browser.WebDriver, TimeSpan.FromSeconds(BrowserProfile.ConditionTimeWait));
         return browser;
     }
 
@@ -41,6 +39,7 @@ public static class BrowserService
 
             return BrowserFactoryContainer.Value;
         }
+
         set => BrowserFactoryContainer.Value = value;
     }
 

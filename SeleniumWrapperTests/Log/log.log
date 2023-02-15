@@ -1,30 +1,5 @@
-2023-02-10 03:44:01 INFO - https://www.mediapark.uz/products/category/8#
-2023-02-10 03:44:08 INFO - Find element with locator By.XPath: //h3[contains(text(),'Телевизоры')]
-2023-02-10 03:44:09 INFO - Click FirstProduct element
-2023-02-10 03:44:09 INFO - Find element with locator By.XPath: (//img[@alt='yes'])[1]
-2023-02-10 03:44:09 INFO - Click SecondProduct element
-2023-02-10 03:44:09 INFO - Find element with locator By.XPath: (//img[@alt='yes'])[2]
-2023-02-10 03:44:10 INFO - Click ShoppingCart element
-2023-02-10 03:44:10 INFO - Find element with locator By.XPath: //a[@class='karzinka']
-2023-02-10 03:44:13 INFO - Find element with locator By.XPath: //*[@class= 'totalCount']
-2023-02-10 03:44:13 INFO - Click Order element
-2023-02-10 03:44:13 INFO - Find element with locator By.XPath: //a[@class='karzinka-open-bottom-block-a2']
-2023-02-10 03:44:17 INFO - Find element with locator By.XPath: //h1[contains(text(),'Оформить заказ')]
-2023-02-10 03:44:17 INFO - Find element with locator By.XPath: //input[@id='msordersform-first_name']
-2023-02-10 03:44:17 INFO - Find element with locator By.XPath: //input[@id='msordersform-last_name']
-2023-02-10 03:44:17 INFO - Find element with locator By.XPath: //input[@id='msordersform-phone_m']
-2023-02-10 03:44:17 INFO - Click NextStep element
-2023-02-10 03:44:17 INFO - Find element with locator By.XPath: //button[@name='button']
-2023-02-10 03:44:18 INFO - Find element with locator By.XPath: //input[@id='msordersform-address']
-2023-02-10 03:44:19 INFO - Click DeliveryType element
-2023-02-10 03:44:19 INFO - Find element with locator By.XPath: //div[@id='msordersform-delivery_type']
-2023-02-10 03:44:19 INFO - Click NextStep element
-2023-02-10 03:44:19 INFO - Find element with locator By.XPath: //button[@class='btn btn-default pull-right check-delivery template_btn']
-2023-02-10 03:44:19 INFO - Click CashType element
-2023-02-10 03:44:19 INFO - Find element with locator By.XPath: //label[@for='payment_info_0']
-2023-02-10 03:44:23 INFO - Find element with locator By.XPath: //input[@id='msordersform-captchacode']
-2023-02-10 03:44:23 INFO - Click AgreeCheckbox element
-2023-02-10 03:44:23 INFO - Find element with locator By.XPath: //input[@id='msordersform-offer']
-2023-02-10 03:44:24 INFO - Click CheckoutButton element
-2023-02-10 03:44:24 INFO - Find element with locator By.XPath: //button[@name='checkout-button']
-2023-02-10 03:44:24 INFO - Find element with locator By.XPath: //div[@class='contentAlert']
+2023-02-15 20:57:09 INFO - Starting Browser
+2023-02-15 20:57:09 INFO - Maximize Window
+2023-02-15 20:57:09 INFO - https://www.mediapark.uz/products/category/8#
+2023-02-15 20:57:09 INFO - Go To Url https://www.mediapark.uz/products/category/8#
+2023-02-15 20:58:09 INFO - Quit Browser

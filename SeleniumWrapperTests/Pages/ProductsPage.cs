@@ -2,10 +2,6 @@
 
 public class ProductsPage : BasePage
 {
-    public ProductsPage(BaseElement uniqueElement, string pageName) : base(uniqueElement, pageName)
-    {
-    }
-
     public ProductsPage(Browser browser) : base(browser)
     {
     }

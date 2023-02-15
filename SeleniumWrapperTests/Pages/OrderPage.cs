@@ -6,10 +6,6 @@ public class OrderPage : BasePage
 {
     private WebDriver WebDriver => BrowserService.Browser.WebDriver;
 
-    public OrderPage(BaseElement uniqueElement, string pageName) : base(uniqueElement, pageName)
-    {
-    }
-
     public OrderPage(Browser browser) : base(browser)
     {
     }

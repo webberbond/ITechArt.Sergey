@@ -2,20 +2,13 @@
 
 public abstract class BasePage : BaseForm
 {
-    private Browser Browser { get; }
-
-    protected BasePage(BaseElement uniqueElement, string pageName) : base(uniqueElement, pageName)
+    protected BasePage(Browser browser) : base(browser)
     {
     }
 
     protected override By UniqueWebLocator { get; }
 
     private readonly string? _baseUrl = AppConfiguration.BaseUrl;
-
-    protected BasePage(Browser browser) : base(browser)
-    {
-        Browser = browser;
-    }
 
     protected abstract string UrlPath { get; }
 

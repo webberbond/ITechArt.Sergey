@@ -5,12 +5,12 @@ public class Browser : IBrowser
     public WebDriverWait BrowserWait { get; set; }
     public WebDriver WebDriver { get; }
 
-    public DriverOptions Options { get; set; }
-
     public Browser(WebDriver webDriver)
     {
+        Logger.Instance.Info("Starting Browser");
         WebDriver = webDriver;
         SetImplicitTime();
+        MaximizeWindow();
     }
 
     public void GoToUrl(Uri uri)
@@ -20,16 +20,19 @@ public class Browser : IBrowser
 
     private void GoToUrl(string uri)
     {
+        Logger.Instance.Info($"Go To Url {uri}");
         WebDriver.Navigate().GoToUrl(uri);
     }
 
     public void Quit()
     {
+        Logger.Instance.Info("Quit Browser");
         WebDriver.Quit();
     }
 
     private void MaximizeWindow()
     {
+        Logger.Instance.Info("Maximize Window");
         WebDriver.Manage().Window.Maximize();
     }
 
@@ -40,6 +43,7 @@ public class Browser : IBrowser
 
     public void BackPage()
     {
+        Logger.Instance.Info("Navigate To Previous Page");
         WebDriver.Navigate().Back();
     }
 

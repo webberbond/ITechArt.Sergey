@@ -9,3 +9,4 @@ global using OpenQA.Selenium.Chrome;
 global using NLog;
 global using NLog.Config;
 global using NLog.Targets;
+global using Logger = SeleniumWrapper.Helpers.Logger;

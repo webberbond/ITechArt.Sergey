@@ -1,6 +1,4 @@
-﻿using Logger = SeleniumWrapper.Helpers.Logger;
-
-namespace SeleniumWrapper.Elements;
+﻿namespace SeleniumWrapper.Elements;
 
 public abstract class BaseElement
 {

@@ -2,18 +2,17 @@
 
 public abstract class BaseForm
 {
+    protected Browser Browser { get; }
+
     protected BaseForm(Browser browser)
     {
+        Browser = browser;
     }
 
     protected abstract By UniqueWebLocator { get; }
 
 
     private BaseElement UniqueElement => new Label(UniqueWebLocator, "Unique Element ");
-
-    protected BaseForm(BaseElement uniqueElement, string nameOfPage)
-    {
-    }
 
     public bool IsPageOpened => UniqueElement.IsDisplayed();
 
@@ -23,9 +22,9 @@ public abstract class BaseForm
         {
             BrowserService.Browser.BrowserWait.Until(driver => driver.FindElement(UniqueWebLocator).Displayed);
         }
-        catch (WebDriverTimeoutException e)
+        catch (WebDriverTimeoutException)
         {
-            throw new NotImplementedException();
+            throw new WebDriverTimeoutException();
         }
     }
 }
