@@ -1,0 +1,38 @@
+pipeline {
+    agent {
+        label "Windows"
+    }
+    environment {
+        dotnet = 'C:\\Program Files\\dotnet\\dotnet.exe'
+    }
+    stages {
+        stage('Check Stage') {
+            steps {
+                git credentialsId: 'Homework', url: 'https://github.com/webberbond/ITechArt.Sergey.git', branch: 'Patterns'
+            }
+        }
+        stage('Build Stage') {
+            steps {
+                bat 'dotnet build'
+            }
+        }
+        stage('Test Stage') {
+            steps {
+                bat 'dotnet test'
+            }
+        }
+        stage('Report Stage') {
+            steps {
+                script {
+                        allure([
+                                includeProperties: false,
+                                jdk: '',
+                                properties: [],
+                                reportBuildPolicy: 'ALWAYS',
+                                results: [[path: 'Patterns/bin/Debug/net6.0/allure-results']]
+                        ])
+                    }
+            }
+        }
+    }
+}
