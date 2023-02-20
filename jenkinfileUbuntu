@@ -1,0 +1,35 @@
+pipeline {
+    agent {
+        label "Ubuntu"
+    }
+     stages {
+         stage('Check Stage') {
+            steps {
+                git credentialsId: 'Homework', url: 'https://github.com/webberbond/ITechArt.Sergey.git', branch: 'Patterns'
+            }
+        }
+        stage('Build Stage') {
+            steps {
+                sh 'dotnet build'
+            }
+        }
+        stage('Test Stage') {
+            steps {
+                sh 'dotnet test'
+            }
+        }
+        stage('Report Stage') {
+            steps {
+                script {
+                        allure([
+                                includeProperties: false,
+                                jdk: '',
+                                properties: [],
+                                reportBuildPolicy: 'ALWAYS',
+                                results: [[path: 'Patterns/bin/Debug/net6.0/allure-results']]
+                        ])
+                    }
+            }
+        }
+    }
+}
