@@ -20,7 +20,7 @@ public class SauceDemoTests : BaseTest
     {
         LoginSteps
             .Login("", Password)
-            .ValidateErrorMessage("Epic sadface: Username is required");
+            .ValidateErrorMessage("Epic sadce: Username is required");
     }
     
     [Test]
