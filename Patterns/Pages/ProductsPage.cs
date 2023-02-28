@@ -1,4 +1,6 @@
-﻿namespace Patterns.Pages;
+﻿using Patterns.Components;
+
+namespace Patterns.Pages;
 
 public sealed class ProductsPage : BasePage
 {
@@ -6,12 +8,10 @@ public sealed class ProductsPage : BasePage
     {
     }
 
+    private ProductsPageComponents ProductsPageComponents => new();
+
     protected override By UniqueWebLocator => By.XPath("//select[@class='product_sort_container']");
 
-    private readonly Button _addToCart = new(By.XPath("//button[@id='add-to-cart-sauce-labs-bike-light']"), "Add To Cart");
-
-    private readonly Button _basket = new(By.XPath("//a[@class='shopping_cart_link']"), "Basket");
-    
     public BasePage OpenPage()
     {
         WebDriver.Navigate().GoToUrl(BaseUrl + "/inventory.html");
@@ -36,14 +36,14 @@ public sealed class ProductsPage : BasePage
 
     public ProductsPage ClickAddToCart()
     {
-        _addToCart.Click();
+        ProductsPageComponents.AddToCart.Click();
 
         return this;
     }
 
     public ProductsPage ClickBasket()
     {
-        _basket.Click();
+        ProductsPageComponents.Basket.Click();
 
         return this;
     }

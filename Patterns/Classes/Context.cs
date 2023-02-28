@@ -27,7 +27,7 @@ public class Context
     {
         return _strategy.GetBackPackAddButtonText();
     }
-    
+
     public string GetBackPackRemoveButtonText()
     {
         return _strategy.GetBackPackRemoveButtonText();
@@ -37,6 +37,7 @@ public class Context
     {
         return _strategy.GetProductName();
     }
+
     public void ClickProduct()
     {
         _strategy.ClickProduct();

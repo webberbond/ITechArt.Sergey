@@ -8,7 +8,7 @@ public class BaseTest
     private Browser Browser { get; set; }
 
     protected static WebDriver WebDriver => BrowserService.Browser.WebDriver;
-    
+
     protected LoginPage LoginPage { get; private set; }
 
     protected LoginSteps LoginSteps { get; private set; }
@@ -16,7 +16,7 @@ public class BaseTest
     protected ProductsPage ProductsPage { get; private set; }
 
     protected CheckoutPage CheckoutPage { get; private set; }
-    
+
     protected SauceDemo SauceDemo { get; private set; }
 
 

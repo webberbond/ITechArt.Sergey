@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium.Support.UI;
+using Patterns.Components;
 
 namespace Patterns.Pages;
 
@@ -20,7 +21,33 @@ public abstract class BasePage : BaseForm
         Browser = browser;
     }
 
+    private BaseComponents BaseComponents => new();
+
     protected abstract override By UniqueWebLocator { get; }
 
     protected static readonly string? BaseUrl = AppConfiguration.BaseUrl;
+
+    public string GetItemName()
+    {
+        return BaseComponents.ItemName.GetText();
+    }
+
+    public string GetItemPrice()
+    {
+        return BaseComponents.ItemPrice.GetText();
+    }
+
+    public BasePage ClickBurgerMenu()
+    {
+        BaseComponents.BurgerMenu.Click();
+
+        return this;
+    }
+
+    public BasePage ClickLogout()
+    {
+        BaseComponents.Logout.Click();
+
+        return this;
+    }
 }

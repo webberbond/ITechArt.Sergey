@@ -22,7 +22,7 @@ public class SauceDemoTests : BaseTest
             .Login("", Password)
             .ValidateErrorMessage("Epic sadface: Username is required");
     }
-    
+
     [Test]
     [AllureOwner("Sergey Zarochentsev")]
     [AllureSuite("Successful Login Using Value Object")]
@@ -34,7 +34,7 @@ public class SauceDemoTests : BaseTest
             .OpenPage()
             .EnterUsername(SauceDemo)
             .EnterPassword(SauceDemo)
-            .ClickLogib();
+            .ClickLogin();
     }
 
     [Test]
@@ -69,16 +69,16 @@ public class SauceDemoTests : BaseTest
         SuccesfullLogin();
         var context = new Context();
         context.SetStrategy(new ProductTitleStrategy());
-        
+
         context.AddProduct();
-        Assert.That(context.GetBackPackRemoveButtonText(), Does.Contain("REMOVE"));
-        
+        Assert.That(context.GetBackPackRemoveButtonText(), Does.Contain("Remove"));
+
         context.ClickProduct();
         Assert.That(context.GetProductName(), Does.Contain("Sauce Labs Backpack"));
-        
+
         context.GetBackToProducts();
 
         context.RemoveProduct();
-        Assert.That(context.GetBackPackAddButtonText(), Does.Contain("ADD TO CART"));
+        Assert.That(context.GetBackPackAddButtonText(), Does.Contain("Add to cart"));
     }
 }
