@@ -1,0 +1,14 @@
+﻿global using NUnit.Framework;
+global using OpenQA.Selenium;
+global using OpenQA.Selenium.Chrome;
+global using OpenQA.Selenium.Support.UI;
+global using SeleniumWrapper.Elements;
+global using SeleniumWrapper.Utils;
+global using System.ComponentModel;
+global using OpenQA.Selenium;
+global using OpenQA.Selenium.Chrome;
+global using NLog;
+global using NLog.Config;
+global using NLog.Targets;
+global using LogLevel = NLog.LogLevel;
+global using Logger = SeleniumWrapper.Helpers.Logger;
