@@ -7,6 +7,6 @@ public interface ICalculator
     public double Subtraction(double a, double b);
 
     public double Multiplication(double a, double b);
-    
+
     public double Division(double d, double d1);
 }

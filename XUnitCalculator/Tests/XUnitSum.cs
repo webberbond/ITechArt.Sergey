@@ -2,20 +2,27 @@ using XUnitCalculator.Calculator;
 
 namespace XUnitCalculator.Tests;
 
-[Collection("Sum Collection")]
+[Collection("Calculator Collection Tests")]
 public class XUnitSum
 {
-    private readonly ICalculator _calculator;
-    
-    public XUnitSum(ICalculator calculator)
+    private readonly CalculatorFixture _calculatorFixture;
+
+    public XUnitSum(CalculatorFixture calculatorFixture)
     {
-        _calculator = calculator;
+        _calculatorFixture = calculatorFixture;
     }
-    
+
     [Fact]
     public void SumPositiveValues()
     {
-        Assert.Equal(3, _calculator.Sum(2,1));
+        //Arrange
+        var calculator = _calculatorFixture.Calculator;
+
+        //Act
+        var result = calculator.Sum(2, 1);
+
+        //Assert
+        Assert.Equal(3, result);
     }
 
     [Theory]
@@ -24,8 +31,13 @@ public class XUnitSum
     [InlineData(5, 6, 11)]
     public void ParametrizedSumTest(double a, double b, double expectedResult)
     {
-        double result = _calculator.Sum(a, b);
-        
+        //Arrange
+        var calculator = _calculatorFixture.Calculator;
+
+        //Act
+        var result = calculator.Sum(a, b);
+
+        //Assert
         Assert.Equal(expectedResult, result);
     }
 }

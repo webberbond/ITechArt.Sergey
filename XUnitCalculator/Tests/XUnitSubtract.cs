@@ -2,10 +2,10 @@
 
 namespace XUnitCalculator.Tests;
 
-public class XUnitSubtract 
+public class XUnitSubtract
 {
     private readonly ICalculator _calculator;
-    
+
     public XUnitSubtract(ICalculator calculator)
     {
         _calculator = calculator;
@@ -15,25 +15,25 @@ public class XUnitSubtract
     public void SubtractValues()
     {
         //Arrange
-        double expectedResult = 5.2;
-        
+        var expectedResult = 5.2;
+
         //Act
-        double result = _calculator.Subtraction(6.7, 1.5);
+        var result = _calculator.Subtraction(6.7, 1.5);
 
         //Assert
         Assert.Equal(expectedResult, result);
     }
-    
+
     [Theory]
     [InlineData(100, 31)]
     public void ParametrizedSumTest(double a, double b)
     {
         //Arrange
         double expectedResult = 69;
-        
+
         //Act
-        double result = _calculator.Subtraction(a, b);
-        
+        var result = _calculator.Subtraction(a, b);
+
         //Assert
         Assert.Equal(expectedResult, result);
     }
