@@ -2,14 +2,14 @@
 
 public class Browser : IBrowser
 {
-    public WebDriverWait BrowserWait { get; set; }
+    public WebDriverWait BrowserWait { get; }
     public WebDriver WebDriver { get; }
 
     public Browser(WebDriver webDriver)
     {
-        Logger.Instance.Info("Starting Browser");
         WebDriver = webDriver;
-        SetImplicitTime();
+        BrowserWait =
+            new WebDriverWait(WebDriver, TimeSpan.FromSeconds(BrowserService.BrowserProfile.ConditionTimeWait));
         MaximizeWindow();
     }
 

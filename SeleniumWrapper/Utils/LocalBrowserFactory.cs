@@ -2,19 +2,19 @@ namespace SeleniumWrapper.Utils;
 
 public class LocalBrowserFactory : BrowserFactory
 {
-    private BrowserProfile BrowserModel { get; }
+    private BrowserProfile? BrowserProfile { get; }
 
-    public LocalBrowserFactory(BrowserProfile browserModel)
+    public LocalBrowserFactory(BrowserProfile? browserProfile)
     {
-        BrowserModel = browserModel;
+        BrowserProfile = browserProfile;
     }
 
     protected override WebDriver WebDriver
     {
         get
         {
-            var browserName = BrowserModel.BrowserName;
-            var driverSettingsOptions = BrowserModel.BrowserSettings;
+            var browserName = BrowserProfile.BrowserName;
+            var driverSettingsOptions = BrowserProfile.BrowserSettings;
             var driverSettings = new ChromeOptions();
             driverSettings.AddArguments(driverSettingsOptions);
 
@@ -22,6 +22,7 @@ public class LocalBrowserFactory : BrowserFactory
             {
                 case BrowserEnum.Chrome:
                     var options = driverSettings;
+                    Logger.Instance.Debug("initialize Chrome Window");
                     WebDriver webDriver = new ChromeDriver(options);
                     return webDriver;
                 default:

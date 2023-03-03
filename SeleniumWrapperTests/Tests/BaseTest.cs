@@ -2,7 +2,7 @@
 
 public class BaseTest
 {
-    protected Browser Browser { get; private set; }
+    private Browser Browser { get; set; }
 
     protected ProductsPage ProductsPage { get; private set; }
 

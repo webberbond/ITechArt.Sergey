@@ -10,8 +10,8 @@ public class ProductsPage : BasePage
 
     protected override By UniqueWebLocator => By.XPath("//h3[contains(text(),'Телевизоры')]");
 
-    private readonly Button _firstProduct = new(By.XPath("(//img[@alt='yes'])[1]"), "FirstProduct");
-    private readonly Button _secondProduct = new(By.XPath("(//img[@alt='yes'])[2]"), "SecondProduct");
+    private readonly Button _firstProduct = new(By.XPath("(//img[@alt='yes'])[11]"), "FirstProduct");
+    private readonly Button _secondProduct = new(By.XPath("(//img[@alt='yes'])[12]"), "SecondProduct");
     private readonly Button _shoppingCart = new(By.XPath("//a[@class='karzinka']"), "ShoppingCart");
     private readonly Label _itemsTotalCount = new(By.XPath("//*[@class= 'totalCount']"), "ItemsTotalCount");
 

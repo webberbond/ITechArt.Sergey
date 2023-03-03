@@ -1,6 +1,4 @@
-﻿using LogLevel = NLog.LogLevel;
-
-namespace SeleniumWrapper.Helpers;
+﻿namespace SeleniumWrapper.Helpers;
 
 public sealed class Logger
 {

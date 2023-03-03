@@ -12,19 +12,26 @@ public abstract class BaseForm
     protected abstract By UniqueWebLocator { get; }
 
 
-    private BaseElement UniqueElement => new Label(UniqueWebLocator, "Unique Element ");
+    protected BaseElement UniqueElement => new Label(UniqueWebLocator, "Unique Element ");
 
     public bool IsPageOpened => UniqueElement.IsDisplayed();
 
-    protected void WaitForPageOpened()
+    private bool IsDisplayed()
+    {
+        return UniqueElement.IsDisplayed();
+    }
+
+    public void WaitForPageOpened()
     {
         try
         {
-            BrowserService.Browser.BrowserWait.Until(driver => driver.FindElement(UniqueWebLocator).Displayed);
+            Browser.BrowserWait.Until(driver => driver.FindElement(UniqueWebLocator).Displayed);
         }
-        catch (WebDriverTimeoutException)
+        catch (WebDriverTimeoutException error)
         {
-            throw new WebDriverTimeoutException();
+            var errorMessage = $"Page with unique locator'{UniqueWebLocator}' wasn't opened";
+            Logger.Instance.Fatal(errorMessage);
+            throw new AssertionException(errorMessage, error);
         }
     }
 }

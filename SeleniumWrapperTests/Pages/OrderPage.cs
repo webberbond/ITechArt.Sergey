@@ -1,10 +1,8 @@
-﻿using Image = SeleniumWrapper.Elements.Image;
-
-namespace SeleniumWrapperTests.Pages;
+﻿namespace SeleniumWrapperTests.Pages;
 
 public class OrderPage : BasePage
 {
-    private WebDriver WebDriver => BrowserService.Browser.WebDriver;
+    private WebDriver WebDriver => Browser.WebDriver;
 
     public OrderPage(Browser browser) : base(browser)
     {
