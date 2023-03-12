@@ -11,7 +11,6 @@ public abstract class BasePage
 
     protected IWebDriver WebDriver { get; }
 
-
     private IWebElement UniqueWebElement => WebDriver.FindElement(UniqueWebLocator);
 
     protected abstract By UniqueWebLocator { get; }

@@ -1,6 +1,3 @@
-using AngleSharp;
-using OpenQA.Selenium.Chrome;
-using PracticeExam.DriverConfiguration;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace PracticeExam.Utilities;
