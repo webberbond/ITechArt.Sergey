@@ -16,9 +16,9 @@ public abstract class BaseTest
         MainPage = new MainPage(WebDriver);
     }
 
-    // [TearDown]
-    // public void TearDown() 
-    // {
-    //     WebDriver.Quit();
-    // }
+    [TearDown]
+    public void TearDown() 
+    {
+        WebDriver.Quit();
+    }
 }
