@@ -26,6 +26,7 @@ internal static class Program
         
         string json =  JsonConvert.SerializeObject(users, Formatting.Indented);
         
+        Directory.CreateDirectory(@"..\..\..\Data");
         File.WriteAllText(@"..\..\..\Data\users.json", json);
     }
 }
