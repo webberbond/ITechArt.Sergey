@@ -1,0 +1,20 @@
+[
+  {
+    "Name": "Sergey",
+    "LastName": "Zarochentsev",
+    "Age": "20",
+    "RecordAmount": [
+      1,
+      3,
+      7,
+      9
+    ],
+    "IsMale": true,
+    "WalletAmount": 100.15,
+    "FavouriteSongs": [
+      "Buddy Holly - Weezer",
+      "Josie - Blink-182",
+      "Helena - My Chemical Romance"
+    ]
+  }
+]
