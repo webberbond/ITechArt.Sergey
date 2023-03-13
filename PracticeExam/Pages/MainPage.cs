@@ -41,11 +41,11 @@ public class MainPage : BasePage {
     }
 
     public void PickDate(int daysDelta) {
-        var targetDate = DateTime.Today.AddDays(daysDelta);
+        var targetDate = DateTime.Now.AddDays(daysDelta);
         var targetDateYear = targetDate.Year.ToString();
         
         void ClickDay() {
-            WebDriver.FindElement(By.XPath($"//li[contains(text(), '{targetDate.Year}')]")).Click();
+            WebDriver.FindElement(By.XPath($"//li[normalize-space()='{targetDateYear}']")).Click();
             WebDriver.FindElement(By.XPath($"//div[contains(@class, \"v-btn__content\") and contains(text(), '{targetDate.ToString("MMM dd").Split(" ")[0]}')]")).Click();
             WebDriver.FindElement(By.XPath($"//div[@class=\"v-btn__content\" and contains(text(), '{targetDate.Day}')]")).Click();
         }
@@ -55,7 +55,7 @@ public class MainPage : BasePage {
             ClickDay();
         }
         catch (Exception) {
-            if (int.Parse(targetDateYear) > 2118) {
+            if (int.Parse(targetDateYear) > 1990) { ;
                 while (WebDriver.FindElement(By.XPath("//ul[@class='v-date-picker-years']")).Text.Contains(targetDateYear) == false) {
                     _addYearsList.Click();
                     _yearButton.Click();
@@ -63,7 +63,7 @@ public class MainPage : BasePage {
 
                 ClickDay();
             }
-            else {
+            else if(int.Parse(targetDateYear) < 1990) {
                 while (WebDriver.FindElement(By.XPath("//ul[@class='v-date-picker-years']")).Text.Contains(targetDateYear) == false) {
                     _subtractYearsList.Click();
                     _yearButton.Click();
