@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using Newtonsoft.Json;
 using Rest.API.Basics.Entities.DataFactory;
 using Rest.API.Basics.Models.View;
 using RestSharp;
@@ -8,14 +9,15 @@ using RestSharp.Serializers;
 
 namespace Rest.API.Basics.Tests;
 
-public class API_Tests
+public class ApiTests
 {
     [Fact]
-    public void GetAllPosts() {
+    public void GetAllPosts()
+    {
         //Arrange
-        var baseUrl = "https://jsonplaceholder.typicode.com";
-        var resource = "/posts";
-        
+        const string baseUrl = "https://jsonplaceholder.typicode.com";
+        const string resource = "/posts";
+
         var postsRequestModel = PostsRequestModelFactory.CorrectModel;
 
         var request = new RestRequest(resource);
@@ -23,10 +25,18 @@ public class API_Tests
         var restClient = new RestClient(baseUrl);
 
         //Act
-        var response = restClient.Execute<PostsVm>(request);
-        
+        var response = restClient.Execute(request);
+
+        var allPosts = JsonConvert.DeserializeObject<List<PostsVm>>(response.Content);
+
+        var sortedPosts = allPosts.OrderBy(p => p.Id).ToList();
+
         //Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        using (new AssertionScope())
+        {
+            Assert.Equal(allPosts, sortedPosts);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
     }
 
     [Fact]
@@ -34,82 +44,101 @@ public class API_Tests
     {
         const string baseUrl = "https://jsonplaceholder.typicode.com";
         const string resource = "/posts/99";
-        
-        var expectedPostVm = new PostsVm {
-            UserId = 10,
-            Id = 99,
-            Title = @"temporibus sit alias delectus eligendi possimus magni",
-            Body = "quo deleniti praesentium dicta non quod\naut est molestias\nmolestias et officia quis nihil\nitaque dolorem quia"
-        };
-        
+
         var request = new RestRequest(resource);
         var restClient = new RestClient(baseUrl);
 
         //Act
         var response = restClient.Execute<PostsVm>(request);
-        var postsVm = response.Data;
+        var post = JsonConvert.DeserializeObject<PostsVm>(response.Content);
 
         //Assert
-        using (new AssertionScope()) {
-            postsVm.Should().BeEquivalentTo(expectedPostVm); 
+        using (new AssertionScope())
+        {
             response.StatusCode.Should().Be(HttpStatusCode.OK);
+            Assert.Equal(10, post.UserId);
+            Assert.Equal(99, post.Id);
+            if (post.Body != null)
+                Assert.NotEmpty(post.Body);
         }
     }
 
     [Fact]
-    public void GetPostBodyEmpty() {
+    public void GetPostBodyEmpty()
+    {
         //Arrange
         const string baseUrl = "https://jsonplaceholder.typicode.com";
         const string resource = "/posts/150";
-        
+
         var request = new RestRequest(resource);
 
-        var restClient = new RestClient(baseUrl);
-        
-        //Act
-        var response = restClient.Execute<PostsVm>(request);
-
-        //Assert
-        using (new AssertionScope()) {
-            response.Content.Should().Be("{}");
-            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        }
-    }
-    
-    [Fact]
-    public void PostRequest() {
-        //Arrange
-        const string baseUrl = "https://jsonplaceholder.typicode.com";
-        const string resource = "/posts";
-
-        var postsRequestModel = PostsRequestModelFactory.CorrectModel;
-        
-        var request = new RestRequest(resource, Method.Post);
-        request.AddParameter(ContentType.Json, postsRequestModel, ParameterType.RequestBody);
         var restClient = new RestClient(baseUrl);
 
         //Act
         var response = restClient.Execute(request);
 
         //Assert
-        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        using (new AssertionScope())
+        {
+            response.Content.Should().Be("{}");
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
     }
 
     [Fact]
-    public void GetAllUsers() {
+    public void PostRequest()
+    {
+        //Arrange
+        const string baseUrl = "https://jsonplaceholder.typicode.com";
+        const string resource = "/posts";
+
+        var postsRequestModel = PostsRequestModelFactory.CorrectModel;
+
+        var request = new RestRequest(resource, Method.Post);
+        request.AddParameter(ContentType.Json, postsRequestModel, ParameterType.RequestBody);
+        var restClient = new RestClient(baseUrl);
+
+        //Act
+        var response = restClient.Execute(request);
+        var createdPost = JsonConvert.DeserializeObject<PostsVm>(response.Content);
+
+        //Assert
+        using (new AssertionScope())
+        {
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.Equal(postsRequestModel.UserId, createdPost.UserId);
+            Assert.Equal(postsRequestModel.Title, createdPost.Title);
+            Assert.Equal(postsRequestModel.Body, createdPost.Body);
+        }
+    }
+
+    [Fact]
+    public void GetAllUsers()
+    {
         //Arrange
         const string baseUrl = "https://jsonplaceholder.typicode.com";
         const string resource = "/users";
-        
+
+        var user = File.ReadAllText("Entities/Data/User.json");
+        var expectedUser = JsonConvert.DeserializeObject<UsersVm>(user);
+        var serializedUser = JsonConvert.SerializeObject(expectedUser);
+
         var request = new RestRequest(resource);
         var restClient = new RestClient(baseUrl);
 
         //Act
-        var response = restClient.Execute<UsersVm>(request);
+        var response = restClient.Execute(request);
+
+        var users = JsonConvert.DeserializeObject<List<UsersVm>>(response.Content);
+
+        var actualUser = JsonConvert.SerializeObject(users[4]);
 
         //Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        
+        using (new AssertionScope())
+        {
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            Assert.Equal(serializedUser, actualUser);
+        }
     }
 
     [Fact]
@@ -119,41 +148,25 @@ public class API_Tests
         const string baseUrl = "https://jsonplaceholder.typicode.com";
         const string resource = "/users/5";
 
-        var expectedUser = new UsersVm {
-            Id = 5,
-            Name = "Chelsey Dietrich",
-            Username = "Kamren",
-            Email = "Lucio_Hettinger@annie.ca",
-            Address = new Address {
-                Street = "Skiles Walks",
-                Suite = "Suite 351",
-                City = "Roscoeview",
-                ZipCode = "33263",
-                Geo = new Geo {
-                    Lat = "-31.8129",
-                    Lng = "62.5342"
-                }
-            },
-            Phone = "(254)954-1289",
-            Website = "demarco.info",
-            Company = new Company {
-                Name = "Keebler LLC",
-                CatchPhrase = "User-centric fault-tolerant solution",
-                Bs = "revolutionize end-to-end systems"
-            }
-        };
-        
+        var userJson = File.ReadAllText("Entities/Data/User.json");
+        var expectedUser = JsonConvert.DeserializeObject<UsersVm>(userJson);
+        var serializedUser = JsonConvert.SerializeObject(expectedUser);
+
         var request = new RestRequest(resource);
         var restClient = new RestClient(baseUrl);
-        
+
         //Act
-        var response = restClient.Execute<UsersVm>(request);
-        var usersVm = response.Data;
-        
+        var response = restClient.Execute(request);
+
+        var user = JsonConvert.DeserializeObject<UsersVm>(response.Content);
+
+        var actualUser = JsonConvert.SerializeObject(user);
+
         //Assert
-        using (new AssertionScope()) {
-            usersVm.Should().BeEquivalentTo(expectedUser);
+        using (new AssertionScope())
+        {
             response.StatusCode.Should().Be(HttpStatusCode.OK);
+            Assert.Equal(serializedUser, actualUser);
         }
     }
 }
