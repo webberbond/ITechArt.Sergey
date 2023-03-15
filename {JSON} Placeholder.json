@@ -1,0 +1,269 @@
+{
+	"info": {
+		"_postman_id": "16f4fd39-9431-4fac-96f1-1a6efa6499ae",
+		"name": "{JSON} Placeholder",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26146445"
+	},
+	"item": [
+		{
+			"name": "GetAllPosts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/posts",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPost[id=99]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Data is correct\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.userId).to.eql(10);\r",
+							"    pm.expect(responseJson.id).to.eql(99);\r",
+							"    pm.expect(responseJson.body).not.null\r",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/posts/99",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"posts",
+						"99"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPost[id=150]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", () => {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body is null\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.body).is.undefined\r",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/posts/150",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"posts",
+						"150"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreatePost[userId=1]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Data is correct\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.title).to.eql(\"Creating post\");\r",
+							"    pm.expect(responseJson.userId).to.eql(1);\r",
+							"    pm.expect(responseJson.body).to.eql(\"Hello, my userId = 1\");\r",
+							"    pm.expect(responseJson.id).to.eql(101);\r",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Creating post\",\r\n    \"userId\": 1,\r\n    \"body\": \"Hello, my userId = 1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/posts",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllUsers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/users",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUser[id=5]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Data is correct\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.id).to.eql(5);\r",
+							"    pm.expect(responseJson.name).to.eql(\"Chelsey Dietrich\");\r",
+							"    pm.expect(responseJson.username).to.eql(\"Kamren\");\r",
+							"    pm.expect(responseJson.email).to.eql(\"Lucio_Hettinger@annie.ca\");\r",
+							"    \r",
+							"    pm.expect(responseJson.address.street).to.eql(\"Skiles Walks\");\r",
+							"    pm.expect(responseJson.address.suite).to.eql(\"Suite 351\");\r",
+							"    pm.expect(responseJson.address.city).to.eql(\"Roscoeview\");\r",
+							"    pm.expect(responseJson.address.zipcode).to.eql(\"33263\");\r",
+							"    pm.expect(responseJson.address.geo.lat).to.eql(\"-31.8129\");\r",
+							"    pm.expect(responseJson.address.geo.lng).to.eql(\"62.5342\");\r",
+							"\r",
+							"    pm.expect(responseJson.phone).to.eql(\"(254)954-1289\");\r",
+							"    pm.expect(responseJson.website).to.eql(\"demarco.info\");\r",
+							"\r",
+							"    pm.expect(responseJson.company.name).to.eql(\"Keebler LLC\");\r",
+							"    pm.expect(responseJson.company.catchPhrase).to.eql(\"User-centric fault-tolerant solution\");\r",
+							"    pm.expect(responseJson.company.bs).to.eql(\"revolutionize end-to-end systems\");\r",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/users/5",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"users",
+						"5"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
