@@ -2,30 +2,30 @@
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Newtonsoft.Json;
-using Rest.API.Basics.Entities.DataFactory;
 using Rest.API.Basics.Models.View;
+using Rest.API.Basics.Resources;
+using Rest.API.Basics.Utils;
 using RestSharp;
-using RestSharp.Serializers;
 
 namespace Rest.API.Basics.Tests;
 
 public class ApiTests
 {
+    private readonly RestClient _restClient;
+
+    public ApiTests()
+    {
+        _restClient = new RestClient();
+    }
+
     [Fact]
     public void GetAllPosts()
     {
         //Arrange
-        const string baseUrl = "https://jsonplaceholder.typicode.com";
-        const string resource = "/posts";
-
-        var postsRequestModel = PostsRequestModelFactory.CorrectModel;
-
-        var request = new RestRequest(resource);
-        request.AddParameter(ContentType.Json, postsRequestModel, ParameterType.RequestBody);
-        var restClient = new RestClient(baseUrl);
+        var request = new RestRequest(Endpoints.GetAllPosts);
 
         //Act
-        var response = restClient.Execute(request);
+        var response = _restClient.Execute(request);
 
         var allPosts = JsonConvert.DeserializeObject<List<PostsVm>>(response.Content);
 
@@ -42,14 +42,10 @@ public class ApiTests
     [Fact]
     public void GetDefinitePostId()
     {
-        const string baseUrl = "https://jsonplaceholder.typicode.com";
-        const string resource = "/posts/99";
-
-        var request = new RestRequest(resource);
-        var restClient = new RestClient(baseUrl);
+        var request = new RestRequest(Endpoints.GetDefinitePost);
 
         //Act
-        var response = restClient.Execute<PostsVm>(request);
+        var response = _restClient.Execute<PostsVm>(request);
         var post = JsonConvert.DeserializeObject<PostsVm>(response.Content);
 
         //Assert
@@ -67,15 +63,10 @@ public class ApiTests
     public void GetPostBodyEmpty()
     {
         //Arrange
-        const string baseUrl = "https://jsonplaceholder.typicode.com";
-        const string resource = "/posts/150";
-
-        var request = new RestRequest(resource);
-
-        var restClient = new RestClient(baseUrl);
+        var request = new RestRequest(Endpoints.GetPostWithEmptyBody);
 
         //Act
-        var response = restClient.Execute(request);
+        var response = _restClient.Execute(request);
 
         //Assert
         using (new AssertionScope())
@@ -89,26 +80,20 @@ public class ApiTests
     public void PostRequest()
     {
         //Arrange
-        const string baseUrl = "https://jsonplaceholder.typicode.com";
-        const string resource = "/posts";
-
-        var postsRequestModel = PostsRequestModelFactory.CorrectModel;
-
-        var request = new RestRequest(resource, Method.Post);
-        request.AddParameter(ContentType.Json, postsRequestModel, ParameterType.RequestBody);
-        var restClient = new RestClient(baseUrl);
+        var request = new RestRequest(Endpoints.GetAllPosts, Method.Post);
+        AddPostRequestModel.AddModel(request);
 
         //Act
-        var response = restClient.Execute(request);
+        var response = _restClient.Execute(request);
         var createdPost = JsonConvert.DeserializeObject<PostsVm>(response.Content);
 
         //Assert
         using (new AssertionScope())
         {
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-            Assert.Equal(postsRequestModel.UserId, createdPost.UserId);
-            Assert.Equal(postsRequestModel.Title, createdPost.Title);
-            Assert.Equal(postsRequestModel.Body, createdPost.Body);
+            Assert.Equal(AddPostRequestModel.PostsRequestModel.UserId, createdPost.UserId);
+            Assert.Equal(AddPostRequestModel.PostsRequestModel.Title, createdPost.Title);
+            Assert.Equal(AddPostRequestModel.PostsRequestModel.Body, createdPost.Body);
         }
     }
 
@@ -116,18 +101,13 @@ public class ApiTests
     public void GetAllUsers()
     {
         //Arrange
-        const string baseUrl = "https://jsonplaceholder.typicode.com";
-        const string resource = "/users";
-
-        var user = File.ReadAllText("Entities/Data/User.json");
-        var expectedUser = JsonConvert.DeserializeObject<UsersVm>(user);
+        var expectedUser = JsonConvert.DeserializeObject<UsersVm>(WorkWithText.User);
         var serializedUser = JsonConvert.SerializeObject(expectedUser);
 
-        var request = new RestRequest(resource);
-        var restClient = new RestClient(baseUrl);
+        var request = new RestRequest(Endpoints.GetAllUsers);
 
         //Act
-        var response = restClient.Execute(request);
+        var response = _restClient.Execute(request);
 
         var users = JsonConvert.DeserializeObject<List<UsersVm>>(response.Content);
 
@@ -145,18 +125,13 @@ public class ApiTests
     public void GetUserWithDefiniteId()
     {
         //Arrange
-        const string baseUrl = "https://jsonplaceholder.typicode.com";
-        const string resource = "/users/5";
-
-        var userJson = File.ReadAllText("Entities/Data/User.json");
-        var expectedUser = JsonConvert.DeserializeObject<UsersVm>(userJson);
+        var expectedUser = JsonConvert.DeserializeObject<UsersVm>(WorkWithText.User);
         var serializedUser = JsonConvert.SerializeObject(expectedUser);
 
-        var request = new RestRequest(resource);
-        var restClient = new RestClient(baseUrl);
+        var request = new RestRequest(Endpoints.GetDefiniteUser);
 
         //Act
-        var response = restClient.Execute(request);
+        var response = _restClient.Execute(request);
 
         var user = JsonConvert.DeserializeObject<UsersVm>(response.Content);
 

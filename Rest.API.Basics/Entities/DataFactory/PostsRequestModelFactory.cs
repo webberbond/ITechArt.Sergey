@@ -3,7 +3,7 @@ using Rest.API.Basics.Models.View;
 
 namespace Rest.API.Basics.Entities.DataFactory;
 
-public static class PostsRequestModelFactory
+public class PostsRequestModelFactory
 {
     public static readonly PostsVm CorrectModel = PostsRequestModelFaker.CorrectModel();
 }
