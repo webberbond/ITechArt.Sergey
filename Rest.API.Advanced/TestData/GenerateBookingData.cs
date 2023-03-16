@@ -13,8 +13,8 @@ public static class GenerateBookingData
             Checkin = dateTime.AddDays(2),
             Checkout = dateTime.AddDays(5)
         };
-        
-        return new BookingData()
+
+        return new BookingData
         {
             Firstname = "Sergey",
             Lastname = "Zarochentsev",

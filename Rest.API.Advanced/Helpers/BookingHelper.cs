@@ -12,10 +12,10 @@ public static class BookingHelper
         restClient = new RestClient();
         restClient.AddDefaultHeader("Accept", "application/json");
 
-        var postRequest = new RestRequest(Endpoints.BaseBookingMethod).AddJsonBody(GenerateBookingData.BookingDetails());
+        var postRequest =
+            new RestRequest(Endpoints.BaseBookingMethod).AddJsonBody(GenerateBookingData.BookingDetails());
 
         return await restClient.ExecutePostAsync<BookingModel>(postRequest);
-
     }
 
     public static async Task<RestResponse<BookingData>> GetBookingById(RestClient restClient, int bookingId)
@@ -27,8 +27,9 @@ public static class BookingHelper
 
         var getRequest = new RestRequest(Endpoints.BookingById(bookingId));
 
-        return await restClient.ExecuteGetAsync<BookingData>(getRequest);
+        return await restClient.ExecuteAsync<BookingData>(getRequest);
     }
+
     public static async Task<RestResponse> DeleteBookingById(RestClient restClient, int bookingId)
     {
         var token = await GetAuthToken(restClient);
@@ -36,21 +37,22 @@ public static class BookingHelper
         restClient.AddDefaultHeader("Accept", "application/json");
         restClient.AddDefaultHeader("Cookie", "token=" + token);
 
-        var getRequest = new RestRequest(Endpoints.BookingById(bookingId));
+        var getRequest = new RestRequest(Endpoints.BookingById(bookingId), Method.Delete);
 
-        return await restClient.DeleteAsync(getRequest);
+        return await restClient.ExecuteAsync(getRequest);
     }
 
-    public static async Task<RestResponse<BookingData>> UpdateBookingById(RestClient restClient, BookingData booking, int bookingId)
+    public static async Task<RestResponse<BookingData>> UpdateBookingById(RestClient restClient, BookingData booking,
+        int bookingId)
     {
         var token = await GetAuthToken(restClient);
         restClient = new RestClient();
         restClient.AddDefaultHeader("Accept", "application/json");
         restClient.AddDefaultHeader("Cookie", "token=" + token);
 
-        var putRequest = new RestRequest(Endpoints.BookingById(bookingId)).AddJsonBody(booking);
+        var putRequest = new RestRequest(Endpoints.BookingById(bookingId), Method.Put).AddJsonBody(booking);
 
-        return await restClient.ExecutePutAsync<BookingData>(putRequest);
+        return await restClient.ExecuteAsync<BookingData>(putRequest);
     }
 
     private static async Task<string?> GetAuthToken(RestClient restClient)
@@ -58,7 +60,7 @@ public static class BookingHelper
         restClient = new RestClient();
         restClient.AddDefaultHeader("Accept", "application/json");
 
-        var postRequest = new RestRequest(Endpoints.GenerateToken).AddJsonBody(Authentication.userTokenDetails());
+        var postRequest = new RestRequest(Endpoints.GenerateToken).AddJsonBody(Authentication.UserTokenDetails());
 
         var generateToken = await restClient.ExecutePostAsync<TokenModel>(postRequest);
 

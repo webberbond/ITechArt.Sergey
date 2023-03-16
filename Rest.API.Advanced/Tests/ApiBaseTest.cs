@@ -3,15 +3,9 @@ using RestSharp;
 
 namespace Rest.API.Advanced.Tests;
 
-public class ApiBaseTest : IDisposable
+public class ApiBaseTest
 {
-    protected RestClient RestClient { get; set; }
+    protected RestClient RestClient { get; private set; }
 
     protected BookingModel BookingDetails { get; set; }
-
-
-    public async void Dispose()
-    {
-        RestClient = null;
-    }
 }

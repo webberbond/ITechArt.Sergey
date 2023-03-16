@@ -4,7 +4,7 @@ namespace Rest.API.Advanced.TestData;
 
 public static class Authentication
 {
-    public static UserTokenModel userTokenDetails()
+    public static UserTokenModel UserTokenDetails()
     {
         return new UserTokenModel
         {

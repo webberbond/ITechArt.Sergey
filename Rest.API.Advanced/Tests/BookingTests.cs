@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using FluentAssertions;
 using FluentAssertions.Execution;
 using Rest.API.Advanced.DataModels;
 using Rest.API.Advanced.Helpers;
@@ -6,107 +7,93 @@ using Rest.API.Advanced.TestData;
 
 namespace Rest.API.Advanced.Tests;
 
-
 public class BookingTests : ApiBaseTest
 {
     [Fact]
     public async Task CreateBooking()
     {
-        var restResponse = await BookingHelper.AddNewBooking(RestClient);
-        BookingDetails = restResponse.Data;
-        Assert.Equal(HttpStatusCode.OK, restResponse.StatusCode);
         //Arrange
         var expectedData = GenerateBookingData.BookingDetails();
-        
+        var restResponse = await BookingHelper.AddNewBooking(RestClient);
+
+        BookingDetails = restResponse.Data;
+
         //Act
-        if (BookingDetails != null)
+        var createdBooking = await BookingHelper.GetBookingById(RestClient, BookingDetails.BookingId);
+
+        //Assert
+        using (new AssertionScope())
         {
-            var createdBooking = await BookingHelper.GetBookingById(RestClient, BookingDetails.BookingId);
+            restResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            //Assert
-            using (new AssertionScope())
-            {
-                Assert.Equal(expectedData.Firstname, createdBooking.Data?.Firstname);
-                Assert.Equal(expectedData.Lastname, createdBooking.Data?.Lastname);
-            
-                if (createdBooking.Data != null)
-                {
-                    Assert.Equal(expectedData.Totalprice, createdBooking.Data.Totalprice);
-                    Assert.Equal(expectedData.Depositpaid, createdBooking.Data.Depositpaid);
-                    if (expectedData.Bookingdates != null)
-                    {
-                        if (createdBooking.Data.Bookingdates != null)
-                        {
-                            Assert.Equal(expectedData.Bookingdates.Checkin, createdBooking.Data.Bookingdates.Checkin);
-                            Assert.Equal(expectedData.Bookingdates.Checkout, createdBooking.Data.Bookingdates.Checkout);
-                        }
-                    }
-
-                    Assert.Equal(expectedData.Additionalneeds, createdBooking.Data.Additionalneeds);
-                }
-            }
+            createdBooking.Data?.Firstname.Should().Be(expectedData.Firstname);
+            createdBooking.Data?.Lastname.Should().Be(expectedData.Lastname);
+            createdBooking.Data?.Totalprice.Should().Be(expectedData.Totalprice);
+            createdBooking.Data?.Depositpaid.Should().Be(expectedData.Depositpaid);
+            createdBooking.Data?.Bookingdates?.Checkin.Should().Be(expectedData.Bookingdates.Checkin);
+            createdBooking.Data?.Bookingdates?.Checkout.Should().Be(expectedData.Bookingdates.Checkout);
+            createdBooking.Data?.Additionalneeds.Should().Be(expectedData.Additionalneeds);
         }
     }
-    
+
     [Fact]
     public async Task UpdateBooking()
     {
+        //Arrange
         var restResponse = await BookingHelper.AddNewBooking(RestClient);
+
         BookingDetails = restResponse.Data;
-        Assert.Equal(HttpStatusCode.OK, restResponse.StatusCode);
-        if (BookingDetails != null)
+
+        //Act
+        var createdBooking = await BookingHelper.GetBookingById(RestClient, BookingDetails.BookingId);
+
+        var updatedData = new BookingData
         {
-            var getCreatedBooking = await BookingHelper.GetBookingById(RestClient, BookingDetails.BookingId);
-        
-            var updatedData = new BookingData()
-            {
-                Firstname = "Arslan",
-                Lastname = "Munasipov",
-                Totalprice = 200,
-                Depositpaid = false,
-                Bookingdates = getCreatedBooking.Data?.Bookingdates,
-                Additionalneeds = "Lunch"
-            };
+            Firstname = "Arslan",
+            Lastname = "Munasipov",
+            Totalprice = 200,
+            Depositpaid = false,
+            Bookingdates = createdBooking.Data?.Bookingdates,
+            Additionalneeds = "Lunch"
+        };
 
-            var updateBooking = await BookingHelper.UpdateBookingById(RestClient, updatedData, BookingDetails.BookingId);
-        
-            var getUpdatedBooking = await BookingHelper.GetBookingById(RestClient, BookingDetails.BookingId);
+        var updateBooking = await BookingHelper.UpdateBookingById(RestClient, updatedData, BookingDetails.BookingId);
 
-            using (new AssertionScope())
-            {
-                Assert.Equal(HttpStatusCode.OK, updateBooking.StatusCode);
-                Assert.Equal(updatedData.Firstname, getUpdatedBooking.Data?.Firstname);
-                Assert.Equal(updatedData.Lastname, getUpdatedBooking.Data?.Lastname);
-                if (getUpdatedBooking.Data != null)
-                {
-                    Assert.Equal(updatedData.Totalprice, getUpdatedBooking.Data.Totalprice);
-                    Assert.Equal(updatedData.Depositpaid, getUpdatedBooking.Data.Depositpaid);
-                    if (updatedData.Bookingdates != null)
-                    {
-                        if (getUpdatedBooking.Data.Bookingdates != null)
-                        {
-                            Assert.Equal(updatedData.Bookingdates.Checkin, getUpdatedBooking.Data.Bookingdates.Checkin);
-                            Assert.Equal(updatedData.Bookingdates.Checkout, getUpdatedBooking.Data.Bookingdates.Checkout);
-                        }
-                    }
+        var updatedBooking = await BookingHelper.GetBookingById(RestClient, BookingDetails.BookingId);
 
-                    Assert.Equal(updatedData.Additionalneeds, getUpdatedBooking.Data.Additionalneeds);
-                }
-            }
+        //Assert
+        using (new AssertionScope())
+        {
+            restResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            updateBooking.StatusCode.Should().Be(HttpStatusCode.OK);
+            updatedBooking.Data?.Firstname.Should().Be(updatedData.Firstname);
+            updatedBooking.Data?.Lastname.Should().Be(updatedData.Lastname);
+            updatedBooking.Data?.Totalprice.Should().Be(updatedData.Totalprice);
+            updatedBooking.Data?.Depositpaid.Should().Be(updatedData.Depositpaid);
+            updatedBooking.Data?.Bookingdates?.Checkin.Should().Be(updatedData.Bookingdates.Checkin);
+            updatedBooking.Data?.Bookingdates?.Checkout.Should().Be(updatedData.Bookingdates.Checkout);
+            updatedBooking.Data?.Additionalneeds.Should().Be(updatedData.Additionalneeds);
         }
     }
 
     [Fact]
     public async Task DeleteBooking()
-    { 
+    {
+        //Arrange
         var restResponse = await BookingHelper.AddNewBooking(RestClient);
+
         BookingDetails = restResponse.Data;
-        Assert.Equal(HttpStatusCode.OK, restResponse.StatusCode);
-        if (BookingDetails != null)
+
+        //Act
+        await BookingHelper.DeleteBookingById(RestClient, BookingDetails.BookingId);
+
+        var deletedBooking = await BookingHelper.GetBookingById(RestClient, BookingDetails.BookingId);
+
+        //Assert
+        using (new AssertionScope())
         {
-            var deleteBooking = await BookingHelper.DeleteBookingById(RestClient, BookingDetails.BookingId);
-        
-            Assert.Equal(HttpStatusCode.Created, deleteBooking.StatusCode);
+            restResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            deletedBooking.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
     }
 }
