@@ -13,9 +13,9 @@ public static class BookingHelper
         restClient.AddDefaultHeader("Accept", "application/json");
 
         var postRequest =
-            new RestRequest(Endpoints.BaseBookingMethod).AddJsonBody(GenerateBookingData.BookingDetails());
+            new RestRequest(Endpoints.BaseBookingMethod, Method.Post).AddJsonBody(GenerateBookingData.BookingDetails());
 
-        return await restClient.ExecutePostAsync<BookingModel>(postRequest);
+        return await restClient.ExecuteAsync<BookingModel>(postRequest);
     }
 
     public static async Task<RestResponse<BookingData>> GetBookingById(RestClient restClient, int bookingId)

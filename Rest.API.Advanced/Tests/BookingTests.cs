@@ -15,11 +15,15 @@ public class BookingTests : ApiBaseTest
         //Arrange
         var expectedData = GenerateBookingData.BookingDetails();
         var restResponse = await BookingHelper.AddNewBooking(RestClient);
+        const string jsonSchemaPath = "Schemas/JsonSchema.json";
 
         BookingDetails = restResponse.Data;
 
         //Act
         var createdBooking = await BookingHelper.GetBookingById(RestClient, BookingDetails.BookingId);
+        var jsonResponse = createdBooking.Content;
+        var jsonSchema = await File.ReadAllTextAsync(jsonSchemaPath);
+        var isValid = SchemaValidator.ValidateResponse(jsonResponse, jsonSchema);
 
         //Assert
         using (new AssertionScope())
@@ -33,6 +37,7 @@ public class BookingTests : ApiBaseTest
             createdBooking.Data?.Bookingdates?.Checkin.Should().Be(expectedData.Bookingdates.Checkin);
             createdBooking.Data?.Bookingdates?.Checkout.Should().Be(expectedData.Bookingdates.Checkout);
             createdBooking.Data?.Additionalneeds.Should().Be(expectedData.Additionalneeds);
+            Assert.True(isValid, "The response did not match the schema.");
         }
     }
 
@@ -43,6 +48,8 @@ public class BookingTests : ApiBaseTest
         var restResponse = await BookingHelper.AddNewBooking(RestClient);
 
         BookingDetails = restResponse.Data;
+
+        const string jsonSchemaPath = "Schemas/JsonSchema.json";
 
         //Act
         var createdBooking = await BookingHelper.GetBookingById(RestClient, BookingDetails.BookingId);
@@ -61,6 +68,10 @@ public class BookingTests : ApiBaseTest
 
         var updatedBooking = await BookingHelper.GetBookingById(RestClient, BookingDetails.BookingId);
 
+        var jsonResponse = updatedBooking.Content;
+        var jsonSchema = await File.ReadAllTextAsync(jsonSchemaPath);
+        var isValid = SchemaValidator.ValidateResponse(jsonResponse, jsonSchema);
+
         //Assert
         using (new AssertionScope())
         {
@@ -73,6 +84,7 @@ public class BookingTests : ApiBaseTest
             updatedBooking.Data?.Bookingdates?.Checkin.Should().Be(updatedData.Bookingdates.Checkin);
             updatedBooking.Data?.Bookingdates?.Checkout.Should().Be(updatedData.Bookingdates.Checkout);
             updatedBooking.Data?.Additionalneeds.Should().Be(updatedData.Additionalneeds);
+            Assert.True(isValid, "The response did not match the schema.");
         }
     }
 
