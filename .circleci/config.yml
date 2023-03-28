@@ -1,4 +1,5 @@
 version: 2.1
+
 jobs:
   build:
     docker:
@@ -8,26 +9,24 @@ jobs:
       - run:
           name: Install Chrome and Chromedriver
           command: |
-            apt-get update
-            apt-get install -y wget unzip gnupg2
-            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-            echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list.d/google-chrome.list
-            apt-get update
-            apt-get install -y google-chrome-stable
+            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+            echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list.d/google-chrome.list
+            sudo apt-get update
+            sudo apt-get install google-chrome-stable
             LATEST=`curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE`
             wget https://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
             unzip chromedriver_linux64.zip
             chmod +x chromedriver
-            mv chromedriver /usr/local/bin/
+            sudo mv chromedriver /usr/local/bin/
       - restore_cache:
           keys:
-            - v1-dependencies-{{ github.sha }}
+            - v1-dependencies-{{ checksum "*.csproj" }}
             - v1-dependencies-
       - run:
           name: Install Dependencies
           command: dotnet restore
       - save_cache:
-          key: v1-dependencies-{{ github.sha }}
+          key: v1-dependencies-{{ checksum "*.csproj" }}
           paths:
             - ~/.nuget/packages
             - ./obj/project.assets.json
@@ -39,15 +38,15 @@ jobs:
           command: |
             export ASPNETCORE_ENVIRONMENT=Development
             export ASPNETCORE_URLS=http://localhost:5000
-            dotnet test --logger trx
+            dotnet test
+          
       - run:
-          name: Generate Allure Report
+          name: Generate Allure report
           command: |
-            mkdir allure-results
-            dotnet tool install --global allure-cli
+            dotnet tool install --global Allure.CommandLine
             allure --version
-            dotnet test --logger "trx;LogFileName=test_results.xml" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-            allure generate --output allure-report --format Allure -c allure-results
-    artifacts:
-      paths:
-        - allure-report
+            mkdir allure-results
+            dotnet test MyTestProject.csproj --logger:"nunit;LogFilePath=testresult.xml" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./lcov
+            allure nunit2junit --input=./testresult.xml --output=./allure-results
+            allure generate ./allure-results -o ./allure-report
+    working_directory: ~/project
