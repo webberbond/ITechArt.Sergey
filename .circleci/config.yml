@@ -1,31 +1,30 @@
 version: 2.1
+
 jobs:
   build:
-    machine:
-      image: windows-server-2019-vs2019:stable
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:6.0
     environment:
-      dotnet: C:\Program Files\dotnet\dotnet.exe
+      DOTNET: '/usr/bin/dotnet'
     steps:
       - checkout
       - run:
-          command: |
-            $env:PATH += ';C:\Program Files\dotnet'
-            dotnet build
+          name: Check Stage
+          command: git clone --branch Patterns https://github.com/webberbond/ITechArt.Sergey.git && cd ITechArt.Sergey && git checkout Patterns
       - run:
+          name: Build Stage
           command: |
-            $env:PATH += ';C:\Program Files\dotnet'
-            dotnet test
+            $DOTNET build
+      - run:
+          name: Test Stage
+          command: |
+            $DOTNET test
       - store_test_results:
-          path: Patterns/TestResults
+          path: 'Patterns/TestResults'
       - store_artifacts:
-          path: Patterns/bin/Debug/net6.0
-          destination: build-artifacts
-      - run:
-          command: |
-            $env:PATH += ';C:\Program Files\dotnet'
-            allure generate Patterns/bin/Debug/net6.0/allure-results -o build-artifacts/allure-report
+          path: 'Patterns/bin/Debug/net6.0/allure-results'
+
 workflows:
-  version: 2
-  build:
+  build-and-test:
     jobs:
       - build
