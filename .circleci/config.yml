@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: mcr.microsoft.com/dotnet/sdk:5.0
+      - image: mcr.microsoft.com/dotnet/sdk:6.0
         environment:
           TZ: "America/New_York"
       - image: selenium/standalone-chrome:latest
@@ -16,14 +16,17 @@ jobs:
           name: Build solution
           command: dotnet build
       - run:
-          name: Run tests
-          command: dotnet test --filter "TestCategory=Smoke" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+          name: Run tests and generate Allure report
+          command: |
+            dotnet test --filter "TestCategory=Smoke" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+            dotnet tool install -g allure-commandline
+            allure generate TestResults -o TestResults/AllureReport --clean
       - store_artifacts:
           path: TestResults
           destination: test-results
       - store_artifacts:
-          path: coverage.opencover.xml
-          destination: test-results
+          path: TestResults/AllureReport
+          destination: allure-report
 
 workflows:
   build:
