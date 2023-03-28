@@ -21,13 +21,13 @@ jobs:
             mv chromedriver /usr/local/bin/
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "*.csproj" }}
+            - v1-dependencies-{{ github.sha }}
             - v1-dependencies-
       - run:
           name: Install Dependencies
           command: dotnet restore
       - save_cache:
-          key: v1-dependencies-{{ checksum "*.csproj" }}
+          key: v1-dependencies-{{ github.sha }}
           paths:
             - ~/.nuget/packages
             - ./obj/project.assets.json
@@ -39,4 +39,15 @@ jobs:
           command: |
             export ASPNETCORE_ENVIRONMENT=Development
             export ASPNETCORE_URLS=http://localhost:5000
-            dotnet test 
+            dotnet test --logger trx
+      - run:
+          name: Generate Allure Report
+          command: |
+            mkdir allure-results
+            dotnet tool install --global allure-cli
+            allure --version
+            dotnet test --logger "trx;LogFileName=test_results.xml" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+            allure generate --output allure-report --format Allure -c allure-results
+    artifacts:
+      paths:
+        - allure-report
