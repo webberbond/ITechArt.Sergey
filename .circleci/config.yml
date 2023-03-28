@@ -1,0 +1,30 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:6.0
+    environment:
+      DOTNET: '/usr/bin/dotnet'
+    steps:
+      - checkout
+      - run:
+          name: Check Stage
+          command: git clone --branch Patterns https://github.com/webberbond/ITechArt.Sergey.git && cd ITechArt.Sergey && git checkout Patterns
+      - run:
+          name: Build Stage
+          command: |
+            $DOTNET build
+      - run:
+          name: Test Stage
+          command: |
+            $DOTNET test
+      - store_test_results:
+          path: 'Patterns/TestResults'
+      - store_artifacts:
+          path: 'Patterns/bin/Debug/net6.0/allure-results'
+
+workflows:
+  build-and-test:
+    jobs:
+      - build
