@@ -10,15 +10,15 @@ jobs:
           command: |
             apt-get update
             apt-get install -y wget unzip gnupg2
-            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-            echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list.d/google-chrome.list
-            sudo apt-get update
-            sudo apt-get install -y google-chrome-stable
+            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+            echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list.d/google-chrome.list
+            apt-get update
+            apt-get install -y google-chrome-stable
             LATEST=`curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE`
             wget https://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
             unzip chromedriver_linux64.zip
             chmod +x chromedriver
-            sudo mv chromedriver /usr/local/bin/
+            mv chromedriver /usr/local/bin/
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "*.csproj" }}
