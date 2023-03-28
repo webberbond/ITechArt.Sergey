@@ -1,38 +1,31 @@
 version: 2.1
-
 jobs:
   build:
-    working_directory: ~/repo
-    docker:
-      - image: mcr.microsoft.com/dotnet/sdk:6.0
-        name: dotnet-sdk-6.0
-        environment:
-          - ASPNETCORE_ENVIRONMENT=Development
+    machine:
+      image: windows-server-2019-vs2019:stable
+    environment:
+      dotnet: C:\Program Files\dotnet\dotnet.exe
     steps:
       - checkout
       - run:
-          name: Restore dependencies
-          command: dotnet restore
-      - run:
-          name: Build
-          command: dotnet build --configuration Release
-      - run:
-          name: Run tests
-          command: dotnet test --configuration Release --logger:trx /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-      - run:
-          name: Generate Allure report
           command: |
-            dotnet add package Allure.NUnit
-            dotnet add package Allure.Commons
-            dotnet add package Microsoft.Extensions.FileSystemGlobbing
-            dotnet add package Microsoft.Extensions.FileSystemGlobbing.Abstractions
-            dotnet test --no-build --configuration Release /p:AllureResultsDirectory=TestResults/allure-results /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-            dotnet tool install -g ReportGenerator
-            reportgenerator -reports:TestResults/**/coverage.opencover.xml -targetdir:TestResults/CoverageReport
-            allure generate TestResults/allure-results -o TestResults/allure-report --clean
-          when: always
-
+            $env:PATH += ';C:\Program Files\dotnet'
+            dotnet build
+      - run:
+          command: |
+            $env:PATH += ';C:\Program Files\dotnet'
+            dotnet test
+      - store_test_results:
+          path: Patterns/TestResults
+      - store_artifacts:
+          path: Patterns/bin/Debug/net6.0
+          destination: build-artifacts
+      - run:
+          command: |
+            $env:PATH += ';C:\Program Files\dotnet'
+            allure generate Patterns/bin/Debug/net6.0/allure-results -o build-artifacts/allure-report
 workflows:
-  build-and-test:
+  version: 2
+  build:
     jobs:
       - build
