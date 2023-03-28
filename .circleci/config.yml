@@ -9,16 +9,16 @@ jobs:
           name: Install Chrome and Chromedriver
           command: |
             apt-get update
-            apt-get install -y wget unzip
-            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | su -c 'apt-key add -'
-            echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | su -c 'tee -a /etc/apt/sources.list.d/google-chrome.list'
-            su -c 'apt-get update'
-            su -c 'apt-get install -y google-chrome-stable'
+            apt-get install -y wget unzip gnupg2
+            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+            echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list.d/google-chrome.list
+            sudo apt-get update
+            sudo apt-get install -y google-chrome-stable
             LATEST=`curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE`
             wget https://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
             unzip chromedriver_linux64.zip
             chmod +x chromedriver
-            su -c 'mv chromedriver /usr/local/bin/'
+            sudo mv chromedriver /usr/local/bin/
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "*.csproj" }}
