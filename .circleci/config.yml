@@ -2,29 +2,42 @@ version: 2.1
 
 jobs:
   build:
+    working_directory: ~/repo
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:6.0
-    environment:
-      DOTNET: '/usr/bin/dotnet'
+        name: dotnet-sdk-6.0
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Development
+      - image: selenium/standalone-chrome
+        name: selenium-chrome
+        ports:
+          - 4444:4444
     steps:
       - checkout
       - run:
-          name: Check Stage
-          command: git clone --branch Patterns https://github.com/webberbond/ITechArt.Sergey.git && cd ITechArt.Sergey && git checkout Patterns
+          name: Restore dependencies
+          command: dotnet restore
       - run:
-          name: Build Stage
-          command: |
-            $DOTNET build
+          name: Build
+          command: dotnet build --configuration Release
       - run:
-          name: Test Stage
+          name: Run tests
+          command: dotnet test --configuration Release --logger:trx /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+      - run:
+          name: Generate Allure report
           command: |
-            $DOTNET test
-      - store_test_results:
-          path: 'Patterns/TestResults'
-      - store_artifacts:
-          path: 'Patterns/bin/Debug/net6.0/allure-results'
+            dotnet add package Allure.NUnit
+            dotnet add package Allure.Commons
+            dotnet add package Microsoft.Extensions.FileSystemGlobbing
+            dotnet add package Microsoft.Extensions.FileSystemGlobbing.Abstractions
+            dotnet test --no-build --configuration Release /p:AllureResultsDirectory=TestResults/allure-results /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+            dotnet tool install -g ReportGenerator
+            reportgenerator -reports:TestResults/**/coverage.opencover.xml -targetdir:TestResults/CoverageReport
+            allure generate TestResults/allure-results -o TestResults/allure-report --clean
+          when: always
 
 workflows:
   build-and-test:
     jobs:
       - build
+
