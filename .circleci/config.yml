@@ -1,77 +1,40 @@
 version: 2.1
-
-orbs:
-  win: circleci/windows@5.0.0
-
-commands:
-  report:
-    steps:
-    - store_test_results:
-        path: Test/TestResults
-    - store_artifacts:
-        path: Test/TestResults
-
 jobs:
-  test-windows:
-    executor:
-      name: win/default
-    steps:
-      - checkout
-      - run: ./scripts/install-windows.ps1
-      - run: dotnet build -c Release
-      - run: bash scripts/test.sh --filter "TestCategory=WinDivert"
-      - report
-
-  test-ubuntu:
-    parameters:
-      libpcap:
-        description: How to install libpcap
-        type: string
-    machine:
-      image: ubuntu-2004:202201-02
-    steps:
-      - checkout
-      - run: sudo -E bash scripts/install-dotnet.sh --install-dir /usr/local/bin
-      - run: sudo -E bash scripts/install-tap.sh
-      # Download and compile latest libpcap
-      - when:
-          condition: { equal: [ libpcap-script, << parameters.libpcap >> ] }
-          steps:
-            - run: sudo -E bash scripts/install-libpcap.sh
-      # Install libpcap from apt-get
-      - when:
-          condition: {not: { equal: [ libpcap-script, << parameters.libpcap >> ] } }
-          steps:
-            - run: sudo apt-get install << parameters.libpcap >>
-      - run: sudo -E bash scripts/test.sh
-      - run: 
-          when: always
-          command: sudo chmod -R +r Test/TestResults
-      - report
-
-  test-arm:
-    machine:
-      image: ubuntu-2004:202101-01
-    resource_class: arm.medium
-    steps:
-      - checkout
-      - run: sudo -E bash scripts/install-dotnet.sh --install-dir /usr/local/bin
-      - run: sudo -E bash scripts/install-tap.sh
-      - run: sudo apt-get install libpcap0.8
-      - run: sudo -E bash scripts/test.sh
-      - run: 
-          when: always
-          command: sudo chmod -R +r Test/TestResults
-      - report
-
-workflows:
-  version: 2
   build:
-    jobs:
-      - test-windows
-      - test-arm
-      - test-ubuntu:
-          name: << matrix.libpcap >>
-          matrix:
-            parameters:
-              libpcap: [ "libpcap-script", "libpcap-dev", "libpcap0.8" ]
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:6.0
+    steps:
+      - checkout
+      - run:
+          name: Install Chrome and Chromedriver
+          command: |
+            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+            echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list.d/google-chrome.list
+            sudo apt-get update
+            sudo apt-get install google-chrome-stable
+            LATEST=`curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE`
+            wget https://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
+            unzip chromedriver_linux64.zip
+            chmod +x chromedriver
+            sudo mv chromedriver /usr/local/bin/
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "*.csproj" }}
+            - v1-dependencies-
+      - run:
+          name: Install Dependencies
+          command: dotnet restore
+      - save_cache:
+          key: v1-dependencies-{{ checksum "*.csproj" }}
+          paths:
+            - ~/.nuget/packages
+            - ./obj/project.assets.json
+      - run:
+          name: Build Solution
+          command: dotnet build
+      - run:
+          name: Run Tests
+          command: |
+            export ASPNETCORE_ENVIRONMENT=Development
+            export ASPNETCORE_URLS=http://localhost:5000
+            dotnet test --filter "Category=Functional"
