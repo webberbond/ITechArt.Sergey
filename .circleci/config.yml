@@ -1,16 +1,14 @@
 version: 2.1
 
-orbs:
-  dotnet: circleci/dotnet@2.2.1
-
 jobs:
   build:
-    executor: dotnet/default
     working_directory: ~/repo
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:6.0
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Development
     steps:
       - checkout
-      - dotnet/install-sdk
-      - dotnet/install-runtime
       - run:
           name: Restore dependencies
           command: dotnet restore
