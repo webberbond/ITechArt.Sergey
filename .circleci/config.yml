@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  dotnet: circleci/dotnet@1.1.7
+  dotnet: circleci/dotnet@2.2.1
 
 jobs:
   build:
