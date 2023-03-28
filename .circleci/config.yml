@@ -2,36 +2,56 @@ version: 2.1
 
 jobs:
   build:
-    working_directory: ~/repo
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:6.0
-        environment:
-          - ASPNETCORE_ENVIRONMENT=Development
     steps:
       - checkout
       - run:
-          name: Restore dependencies
+          name: Install Chrome and Chromedriver
+          command: |
+            apt-get update
+            apt-get install -y wget unzip gnupg2
+            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+            echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list.d/google-chrome.list
+            apt-get update
+            apt-get install -y google-chrome-stable
+            LATEST=`curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE`
+            wget https://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
+            unzip chromedriver_linux64.zip
+            chmod +x chromedriver
+            mv chromedriver /usr/local/bin/
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "*.csproj" }}
+            - v1-dependencies-
+      - run:
+          name: Install Dependencies
           command: dotnet restore
+      - save_cache:
+          key: v1-dependencies-{{ checksum "*.csproj" }}
+          paths:
+            - ~/.nuget/packages
+            - ./obj/project.assets.json
       - run:
-          name: Build
-          command: dotnet build --configuration Release
+          name: Build Solution
+          command: dotnet build
       - run:
-          name: Run tests
-          command: dotnet test --configuration Release --logger:trx /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+          name: Run Tests
+          command: |
+            export ASPNETCORE_ENVIRONMENT=Development
+            export ASPNETCORE_URLS=http://localhost:5000
+            dotnet test
+          
       - run:
           name: Generate Allure report
           command: |
-            dotnet add package Allure.NUnit
-            dotnet add package Allure.Commons
-            dotnet add package Microsoft.Extensions.FileSystemGlobbing
-            dotnet add package Microsoft.Extensions.FileSystemGlobbing.Abstractions
-            dotnet test --no-build --configuration Release /p:AllureResultsDirectory=TestResults/allure-results /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-            dotnet tool install -g ReportGenerator
-            reportgenerator -reports:TestResults/**/coverage.opencover.xml -targetdir:TestResults/CoverageReport
-            allure generate TestResults/allure-results -o TestResults/allure-report --clean
-          when: always
+            dotnet tool install --global Allure.CommandLine
+            allure --version
+            mkdir allure-results
+            dotnet test MyTestProject.csproj --logger:"nunit;LogFilePath=testresult.xml" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./lcov
+            allure nunit2junit --input=./testresult.xml --output=./allure-results
+            allure generate ./allure-results -o ./allure-report
+    working_directory: ~/project
 
-workflows:
-  build-and-test:
-    jobs:
-      - build
+
+
