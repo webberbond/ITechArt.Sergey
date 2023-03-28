@@ -1,13 +1,39 @@
 version: 2.1
 
+orbs:
+  dotnet: circleci/dotnet@1.1.7
+
 jobs:
   build:
-    docker:
-      - image: mcr.microsoft.com/dotnet/sdk:5.0
+    executor: dotnet/default
     working_directory: ~/repo
     steps:
       - checkout
-      - run: dotnet restore
-      - run: dotnet tool install --global allure-commandline --version 2.16.0
-      - run: dotnet test --logger:trx --results-directory:./TestResults
-      - run: allure generate ./TestResults -c -o ./TestReport && allure open ./TestReport
+      - dotnet/install-sdk
+      - dotnet/install-runtime
+      - run:
+          name: Restore dependencies
+          command: dotnet restore
+      - run:
+          name: Build
+          command: dotnet build --configuration Release
+      - run:
+          name: Run tests
+          command: dotnet test --configuration Release --logger:trx /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+      - run:
+          name: Generate Allure report
+          command: |
+            dotnet add package Allure.NUnit
+            dotnet add package Allure.Commons
+            dotnet add package Microsoft.Extensions.FileSystemGlobbing
+            dotnet add package Microsoft.Extensions.FileSystemGlobbing.Abstractions
+            dotnet test --no-build --configuration Release /p:AllureResultsDirectory=TestResults/allure-results /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+            dotnet tool install -g ReportGenerator
+            reportgenerator -reports:TestResults/**/coverage.opencover.xml -targetdir:TestResults/CoverageReport
+            allure generate TestResults/allure-results -o TestResults/allure-report --clean
+          when: always
+
+workflows:
+  build-and-test:
+    jobs:
+      - build
