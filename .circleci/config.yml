@@ -9,10 +9,12 @@ jobs:
       - run:
           name: Install Chrome and Chromedriver
           command: |
-            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-            echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list.d/google-chrome.list
             apt-get update
-            apt-get install google-chrome-stable
+            apt-get install -y wget unzip gnupg2
+            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+            echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list.d/google-chrome.list
+            apt-get update
+            apt-get install -y google-chrome-stable
             LATEST=`curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE`
             wget https://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
             unzip chromedriver_linux64.zip
@@ -50,3 +52,6 @@ jobs:
             allure nunit2junit --input=./testresult.xml --output=./allure-results
             allure generate ./allure-results -o ./allure-report
     working_directory: ~/project
+
+
+
