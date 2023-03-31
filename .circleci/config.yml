@@ -11,25 +11,7 @@ jobs:
     steps:
       - checkout
       - run:
-<<<<<<< Updated upstream
           name: Restore dependencies
-=======
-          name: Install Chrome and Chromedriver
-          command: |
-            apt-get update
-            apt-get install -y wget unzip gnupg2
-            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-            echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list.d/google-chrome.list
-            apt-get update
-            apt-get install -y google-chrome-stable
-            LATEST=`curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE`
-            wget https://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
-            unzip chromedriver_linux64.zip
-            chmod +x chromedriver
-            mv chromedriver /usr/local/bin/
-      - run:
-          name: Install Dependencies
->>>>>>> Stashed changes
           command: dotnet restore
       - run:
           name: Build project
