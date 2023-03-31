@@ -2,11 +2,18 @@ version: 2.1
 
 jobs:
   build:
+    working_directory: ~/repo
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:6.0
+        environment:
+          NUGET_XMLDOC_MODE: skip
+          ASPNETCORE_ENVIRONMENT: "Development"
     steps:
       - checkout
       - run:
+<<<<<<< Updated upstream
+          name: Restore dependencies
+=======
           name: Install Chrome and Chromedriver
           command: |
             apt-get update
@@ -20,38 +27,29 @@ jobs:
             unzip chromedriver_linux64.zip
             chmod +x chromedriver
             mv chromedriver /usr/local/bin/
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "*.csproj" }}
-            - v1-dependencies-
       - run:
           name: Install Dependencies
+>>>>>>> Stashed changes
           command: dotnet restore
-      - save_cache:
-          key: v1-dependencies-{{ checksum "*.csproj" }}
-          paths:
-            - ~/.nuget/packages
-            - ./obj/project.assets.json
       - run:
-          name: Build Solution
-          command: dotnet build
+          name: Build project
+          command: dotnet build --configuration Release
       - run:
-          name: Run Tests
+          name: Run tests
           command: |
-            export ASPNETCORE_ENVIRONMENT=Development
-            export ASPNETCORE_URLS=http://localhost:5000
-            dotnet test
-          
+            dotnet test --configuration Release --logger "trx;LogFileName=test_results.xml" --collect:"XPlat Code Coverage"
       - run:
           name: Generate Allure report
           command: |
-            dotnet tool install --global Allure.CommandLine
-            allure --version
-            mkdir allure-results
-            dotnet test MyTestProject.csproj --logger:"nunit;LogFilePath=testresult.xml" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./lcov
-            allure nunit2junit --input=./testresult.xml --output=./allure-results
-            allure generate ./allure-results -o ./allure-report
-    working_directory: ~/project
+            dotnet tool install Allure.Commandline --tool-path ./allure
+            ./allure/allure-2.15.0/bin/allure generate ./TestResults/ -o ./AllureReport/ --clean
+          when: always
+      - store_artifacts:
+          path: AllureReport/
+          destination: allure-report
 
-
-
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
