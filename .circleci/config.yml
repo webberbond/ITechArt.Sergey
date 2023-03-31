@@ -4,14 +4,17 @@ jobs:
   build:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:6.0
-      - image: selenium/standalone-chrome
+      - image: selenium/standalone-chrome:latest
     steps:
       - checkout
       - run: dotnet restore
+      - run: dotnet build
       - run:
           name: Run tests
           command: |
-            dotnet test --logger:trx --results-directory TestResults
+            export ASPNETCORE_URLS=http://localhost:5000
+            export SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub
+            dotnet test --logger:"trx;LogFileName=test_results.xml" --results-directory TestResults
       - run:
           name: Generate Allure report
           command: |
